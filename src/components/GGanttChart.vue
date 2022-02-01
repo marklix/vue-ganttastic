@@ -58,8 +58,8 @@ import GGanttTimeaxis from "./GGanttTimeaxis.vue"
 import GGanttGrid from "./GGanttGrid.vue"
 import GGanttBarTooltip from "./GGanttBarTooltip.vue"
 import INJECTION_KEYS from "../models/symbols"
-import { computed, provide, ref, toRefs, defineProps, withDefaults, defineEmits, useSlots } from "vue"
-import { GanttBarObject } from "../models/models"
+import { computed, provide, ref, toRefs, defineProps, withDefaults, defineEmits, useSlots, VNode } from "vue"
+import { GanttBarObject } from "@/models/models"
 
 interface GGanttChartProps {
   chartStart: string
@@ -111,16 +111,35 @@ const slots = useSlots()
 const colors = computed(() => {
   return colorSchemes[props.colorScheme] || colorSchemes.default
 })
+
 const allBarsInChartByRow = computed(() => {
   const defaultSlot = slots.default?.()
+  const barsArray: Array<VNode> = []
   const allBars: GanttBarObject[][] = []
-  if (defaultSlot) {
-    defaultSlot.forEach(child => {
-      if (child.props?.bars) {
-        const bars = child.props.bars as GanttBarObject[]
-        allBars.push(bars)
-      }
-    })
+
+  defaultSlot?.forEach((el) => {
+    if (typeof el.children !== "string" || el.props !== null) {
+      barsArray.push(el as VNode)
+    }
+  })
+
+  if (barsArray) {
+    if (barsArray?.length <= 1) {
+      const arrayChildren: [] = barsArray[0].children as []
+      arrayChildren?.forEach((child: VNode) => {
+        if (child.props?.bars) {
+          const bars = child.props.bars as GanttBarObject[]
+          allBars.push(bars)
+        }
+      })
+    } else {
+      barsArray?.forEach((child: VNode) => {
+        if (child.props?.bars) {
+          const bars = child.props.bars as GanttBarObject[]
+          allBars.push(bars)
+        }
+      })
+    }
   }
   return allBars
 })
@@ -181,21 +200,21 @@ provide(INJECTION_KEYS.emitBarEventKey, emitBarEvent)
 </script>
 
 <style scoped>
-  #g-gantt-chart{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    border-radius: 5px;
-  }
+#g-gantt-chart{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border-radius: 5px;
+}
 
-  #g-gantt-rows-container{
-    position: relative;
-  }
+#g-gantt-rows-container{
+  position: relative;
+}
 </style>
