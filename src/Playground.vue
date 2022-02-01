@@ -2,13 +2,14 @@
   <g-gantt-chart
     :chart-start="chartStart"
     :chart-end="chartEnd"
-    precision="month"
+    precision="hour"
     :row-height="40"
     grid
     width="100%"
     bar-start="beginDate"
     bar-end="endDate"
     :date-format="format"
+    no-overlap
     @mousedown-bar="onMousedownBar($event.bar, $event.e, $event.datetime)"
     @dblclick-bar="onMouseupBar($event.bar, $event.e, $event.datetime)"
     @mouseenter-bar="onMouseenterBar($event.bar, $event.e)"
@@ -19,14 +20,11 @@
     @contextmenu-bar="onContextmenuBar($event.bar, $event.e, $event.datetime)"
   >
     <g-gantt-row
-      label="My row 1"
-      :bars="bars1"
+      v-for="(bar, idx) in bars1"
+      :key="idx"
+      :label="'My row' + idx"
+      :bars="bar"
       highlight-on-hover
-    />
-    <g-gantt-row
-      label="My row 2"
-      highlight-on-hover
-      :bars="bars2"
     />
   </g-gantt-chart>
 
@@ -44,38 +42,83 @@ import GGanttRow from "./components/GGanttRow.vue"
 import GGanttChart from "./components/GGanttChart.vue"
 import { GanttBarObject } from "./models/models"
 
-const chartStart = ref("11.12.2020 12:00")
-const chartEnd = ref("15.07.2021 12:00")
-const format = ref("DD.MM.YYYY HH:mm")
+const chartStart = ref("2022-12-11 00:00")
+const chartEnd = ref("2022-12-11 23:59")
+const format = ref("YYYY-MM-DD HH:mm")
 
 const bars1 = ref([
-  {
-    beginDate: "24.04.2021 13:00",
-    endDate: "25.05.2021 19:00",
-    ganttBarConfig: {
-      id: "8621987329",
-      label: "I'm in a bundle",
-      bundle: "bundle2"
+  [
+    {
+      beginDate: "2022-12-11 16:00",
+      endDate: "2022-12-11 18:00",
+      gapMs: 7200000,
+      ganttBarConfig: {
+        id: "8621987329",
+        label: "I'm in a bundle"
+      }
     }
-  }
+  ],
+  [
+    {
+      beginDate: "2022-12-11 11:00",
+      endDate: "2022-12-11 12:00",
+      gapMs: 3600000,
+      ganttBarConfig: {
+        id: "1592311887",
+        label: "I'm in a bundle",
+        style: {
+          background: "magenta"
+        }
+      }
+    },
+    {
+      beginDate: "2022-12-11 08:00",
+      endDate: "2022-12-11 10:00",
+      gapMs: 7200000,
+      ganttBarConfig: {
+        id: "7716981641",
+        label: "Lorem ipsum dolor",
+        hasHandles: true,
+        style: {
+          background: "#b74b52"
+        }
+      }
+    },
+    {
+      beginDate: "2022-12-11 17:00",
+      endDate: "2022-12-11 18:00",
+      gapMs: 3600000,
+      ganttBarConfig: {
+        id: "9716981641",
+        label: "Oh hey",
+        style: {
+          background: "#69e064",
+          borderRadius: "15px",
+          color: "blue",
+          fontSize: "10px"
+        }
+      }
+    }
+  ]
 ])
 
 const bars2 = ref([
   {
-    beginDate: "24.04.2021 13:00",
-    endDate: "25.05.2021 19:00",
+    beginDate: "2022-12-11 11:00",
+    endDate: "2022-12-11 12:00",
+    gapMs: 3600000,
     ganttBarConfig: {
       id: "1592311887",
       label: "I'm in a bundle",
-      bundle: "bundle2",
       style: {
         background: "magenta"
       }
     }
   },
   {
-    beginDate: "01.01.2021 00:00",
-    endDate: "01.03.2021 00:00",
+    beginDate: "2022-12-11 08:00",
+    endDate: "2022-12-11 10:00",
+    gapMs: 7200000,
     ganttBarConfig: {
       id: "7716981641",
       label: "Lorem ipsum dolor",
@@ -86,8 +129,9 @@ const bars2 = ref([
     }
   },
   {
-    beginDate: "15.06.2021 00:00",
-    endDate: "10.07.2021 00:00",
+    beginDate: "2022-12-11 17:00",
+    endDate: "2022-12-11 18:00",
+    gapMs: 3600000,
     ganttBarConfig: {
       id: "9716981641",
       label: "Oh hey",
@@ -101,12 +145,13 @@ const bars2 = ref([
   }
 ])
 const addBar = () => {
-  if (bars1.value.some(bar => bar.ganttBarConfig.id === "test1")) {
+  if (bars1.value[0].some(bar => bar.ganttBarConfig.id === "test1")) {
     return
   }
   const bar = {
-    beginDate: "26.02.2021 00:00",
-    endDate: "26.03.2021 02:00",
+    beginDate: "2022-12-11 08:00",
+    endDate: "2022-12-11 10:00",
+    gapMs: 7200000,
     ganttBarConfig: {
       id: "test1",
       hasHandles: true,
@@ -117,13 +162,13 @@ const addBar = () => {
       }
     }
   }
-  bars1.value.push(bar)
+  bars1.value[0].push(bar)
 }
 
 const deleteBar = () => {
-  const idx = bars1.value.findIndex(b => b.ganttBarConfig.id === "test1")
+  const idx = bars1.value[0].findIndex(b => b.ganttBarConfig.id === "test1")
   if (idx !== -1) {
-    bars1.value.splice(idx, 1)
+    bars1.value[0].splice(idx, 1)
   }
 }
 
