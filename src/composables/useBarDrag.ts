@@ -1,6 +1,5 @@
-import { GanttBarObject, GGanttChartPropsRefs } from "./../models/models"
+import { GanttBarObject, GGanttChartPropsRefs } from "@/models/models"
 import useDayjsHelper from "./useDayjsHelper"
-
 import useTimePositionMapping from "./useTimePositionMapping"
 import { Ref, ref } from "vue"
 
@@ -17,7 +16,7 @@ export default function useBarDrag (
   let dragCallBack : (e: MouseEvent) => void
 
   const { mapPositionToTime } = useTimePositionMapping(gGanttChartPropsRefs)
-  const { toDayjs } = useDayjsHelper(gGanttChartPropsRefs)
+  const { toDayjs, addGapDayjs, differenceDayjs } = useDayjsHelper(gGanttChartPropsRefs)
 
   const initDrag = (e: MouseEvent) => {
     const barElement = document.getElementById(bar.value.ganttBarConfig.id)
@@ -52,7 +51,7 @@ export default function useBarDrag (
         return
       }
       bar.value[barStart.value] = mapPositionToTime(xStart)
-      bar.value[barEnd.value] = mapPositionToTime(xEnd)
+      bar.value[barEnd.value] = addGapDayjs(mapPositionToTime(xStart), bar.value.gapMs, "ms")
       onDrag(e, bar.value)
     }
   }
@@ -67,6 +66,7 @@ export default function useBarDrag (
         return
       }
       bar.value[barStart.value] = newBarStart
+      bar.value.gapMs = differenceDayjs(bar.value[barStart.value], bar.value[barEnd.value])
       onDrag(e, bar.value)
     }
   }
@@ -81,6 +81,7 @@ export default function useBarDrag (
         return
       }
       bar.value[barEnd.value] = newBarEnd
+      bar.value.gapMs = differenceDayjs(bar.value[barStart.value], bar.value[barEnd.value])
       onDrag(e, bar.value)
     }
   }

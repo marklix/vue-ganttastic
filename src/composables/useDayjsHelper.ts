@@ -1,6 +1,9 @@
-import { GanttBarObject, GGanttChartPropsRefs } from "./../models/models"
-import dayjs from "dayjs"
+import { GanttBarObject, GGanttChartPropsRefs } from "@/models/models"
+import dayjs, { OpUnitType } from "dayjs"
+import utc from "dayjs/plugin/utc"
 import { computed } from "vue"
+
+dayjs.extend(utc)
 
 export default function useBarDrag (
   gGanttChartPropsRefs: GGanttChartPropsRefs
@@ -21,9 +24,19 @@ export default function useBarDrag (
     return dayjs(property, dateFormat.value, true)
   }
 
+  const addGapDayjs = (startTime: string, gap: number, unit: OpUnitType): string => {
+    return dayjs(startTime).add(gap, unit).format(dateFormat.value)
+  }
+
+  const differenceDayjs = (startTime: string, endTime: string): number => {
+    return dayjs(endTime).diff(dayjs(startTime))
+  }
+
   return {
     chartStartDayjs,
     chartEndDayjs,
-    toDayjs
+    toDayjs,
+    addGapDayjs,
+    differenceDayjs
   }
 }
