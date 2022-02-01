@@ -13,9 +13,6 @@
   },
   "main": "dist/library.js",
   "module": "dist/library.mjs",
-  "files": [
-    "dist/*"
-  ],
   "dependencies": {
     "dayjs": "^1.10.5"
   },
