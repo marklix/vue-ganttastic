@@ -1,4 +1,4 @@
-import { GanttBarObject, GGanttChartPropsRefs } from "../models/models"
+import { GanttBarObject, GGanttChartPropsRefs } from "@/models/models"
 import { ComputedRef, ref } from "vue"
 import useBarDrag from "./useBarDrag"
 import useDayjsHelper from "./useDayjsHelper"
@@ -16,8 +16,7 @@ export default function useBarDragManagement (
   const movedBarsInDrag = new Map<GanttBarObject, {oldStart: string, oldEnd: string}>()
 
   const { pushOnOverlap, barStart, barEnd, noOverlap, dateFormat } = gGanttChartPropsRefs
-  const { toDayjs } = useDayjsHelper(gGanttChartPropsRefs)
-
+  const { toDayjs, differenceDayjs } = useDayjsHelper(gGanttChartPropsRefs)
   const initDragOfBar = (bar: GanttBarObject, e: MouseEvent) => {
     const { initDrag } = useBarDrag(ref(bar), gGanttChartPropsRefs, onDrag, onEndDrag)
     const ev = {
@@ -175,6 +174,7 @@ export default function useBarDragManagement (
         movedBarsInDrag.forEach(({ oldStart, oldEnd }, bar) => {
           bar[barStart.value] = oldStart
           bar[barEnd.value] = oldEnd
+          bar.gapMs = differenceDayjs(bar[barStart.value], bar[barEnd.value])
         })
       }
     }
