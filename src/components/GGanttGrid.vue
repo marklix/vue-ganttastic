@@ -44,6 +44,6 @@ const { timeaxisUnits } = useTimeaxisUnits(gGanttChartPropsRefs)
   .g-grid-line {
     width: 1px;
     height: 100%;
-    border-left: 1px solid #eaeaea;
+    border-left: 1px solid #fefefe;
   }
 </style>

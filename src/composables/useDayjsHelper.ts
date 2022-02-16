@@ -1,9 +1,6 @@
 import { GanttBarObject, GGanttChartPropsRefs } from "@/models/models"
 import dayjs, { OpUnitType } from "dayjs"
-import utc from "dayjs/plugin/utc"
 import { computed } from "vue"
-
-dayjs.extend(utc)
 
 export default function useBarDrag (
   gGanttChartPropsRefs: GGanttChartPropsRefs

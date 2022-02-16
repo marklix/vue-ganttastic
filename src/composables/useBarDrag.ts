@@ -1,5 +1,6 @@
 import { GanttBarObject, GGanttChartPropsRefs } from "@/models/models"
 import useDayjsHelper from "./useDayjsHelper"
+import dayjs from "dayjs"
 import useTimePositionMapping from "./useTimePositionMapping"
 import { Ref, ref } from "vue"
 
@@ -9,8 +10,7 @@ export default function useBarDrag (
   onDrag: (e: MouseEvent, bar: GanttBarObject) => void = () => null,
   onEndDrag: (e: MouseEvent, bar: GanttBarObject) => void = () => null
 ) {
-  const { barStart, barEnd, pushOnOverlap } = gGanttChartPropsRefs
-
+  const { barStart, barEnd, pushOnOverlap, dateFormat } = gGanttChartPropsRefs
   const isDragging = ref(false)
   let cursorOffsetX = 0
   let dragCallBack : (e: MouseEvent) => void
@@ -51,6 +51,7 @@ export default function useBarDrag (
         return
       }
       bar.value[barStart.value] = mapPositionToTime(xStart)
+      // Calculate the Gap between start Date and end Date
       bar.value[barEnd.value] = addGapDayjs(mapPositionToTime(xStart), bar.value.gapMs, "ms")
       onDrag(e, bar.value)
     }
@@ -65,7 +66,15 @@ export default function useBarDrag (
       if (toDayjs(newBarStart).isSameOrAfter(toDayjs(bar.value, "end"))) {
         return
       }
+
+      // Keep the minimum Gap size between start Date and end Date
+      if (toDayjs(newBarStart).isSameOrAfter(dayjs(bar.value[barEnd.value]).subtract(30 * 60, "s"))) {
+        bar.value[barStart.value] = dayjs(bar.value[barEnd.value]).subtract(30 * 60, "s").format(dateFormat.value)
+        return
+      }
+
       bar.value[barStart.value] = newBarStart
+      // Calculate the Gap between start Date and end Date
       bar.value.gapMs = differenceDayjs(bar.value[barStart.value], bar.value[barEnd.value])
       onDrag(e, bar.value)
     }
@@ -80,7 +89,15 @@ export default function useBarDrag (
       if (toDayjs(newBarEnd).isSameOrBefore(toDayjs(bar.value, "start"))) {
         return
       }
+
+      // Keep the minimum Gap size between start Date and end Date
+      if (toDayjs(newBarEnd).isSameOrBefore(dayjs(bar.value[barStart.value]).add(30 * 60, "s"))) {
+        bar.value[barEnd.value] = dayjs(bar.value[barStart.value]).add(30 * 60, "s").format(dateFormat.value)
+        return
+      }
+
       bar.value[barEnd.value] = newBarEnd
+      // Calculate the Gap between start Date and end Date
       bar.value.gapMs = differenceDayjs(bar.value[barStart.value], bar.value[barEnd.value])
       onDrag(e, bar.value)
     }

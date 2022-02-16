@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { ColorScheme } from "../color-schemes"
+import { ColorScheme } from "@/color-schemes"
 import useTimeaxisUnits from "../composables/useTimeaxisUnits"
 import { defineProps, inject } from "vue"
 import INJECTION_KEYS from "../models/symbols"
@@ -76,7 +76,7 @@ const { timeaxisUnits } = useTimeaxisUnits(gGanttChartPropsRefs)
     position: sticky;
     top:0;
     width: 100%;
-    height: 8vh;
+    height: 100px;
     min-height: 75px;
     background: white;
     z-index: 4;

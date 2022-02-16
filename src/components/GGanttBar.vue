@@ -103,10 +103,10 @@ const barStyle = computed(() => {
   return {
     ...bar.value.ganttBarConfig.style,
     position: "absolute",
-    top: `${rowHeight.value * 0.1}px`,
+    top: `${rowHeight.value * 0.05}px`,
     left: `${xStart.value}px`,
     width: `${xEnd.value - xStart.value}px`,
-    height: `${rowHeight.value * 0.8}px`,
+    height: `${rowHeight.value * 0.9}px`,
     zIndex: isDragging.value ? 3 : 2
   }
 })
