@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { GanttBarObject } from "../models/models"
+import { GanttBarObject } from "@/models/models"
 import INJECTION_KEYS from "../models/symbols"
 import { computed, toRefs, ref, defineProps, watch, nextTick, inject } from "vue"
 import useDayjsHelper from "../composables/useDayjsHelper"
@@ -78,50 +78,3 @@ const tooltipContent = computed(() => {
 })
 
 </script>
-
-<style scoped>
-.g-gantt-tooltip {
-  position: fixed;
-  background: black;
-  color: white;
-  z-index: 4;
-  font-size: 0.85em;
-  padding: 5px;
-  border-radius: 3px;
-  transition: opacity 0.2s;
-  display: flex;
-  align-items: center;
-}
-.g-gantt-tooltip:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 10%;
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
-  border-bottom-color: black;
-  border-top: 0;
-  margin-left: -5px;
-  margin-top: -5px;
-}
-.g-gantt-tooltip > .gantt-bar-tooltip-color-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 100%;
-  margin-right: 4px;
-}
-.fade-enter-active {
-  animation: fade-in .3s;
-}
-.fade-leave-active {
-  animation: fade-in .3s reverse;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  } to {
-    opacity: 1;
-  }
-}</style>

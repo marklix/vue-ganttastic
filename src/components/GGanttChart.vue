@@ -2,7 +2,7 @@
   <div
     id="g-gantt-chart"
     ref="gGanttChart"
-    :style="{width, background: colors.background, fontFamily: font}"
+    :style="{width, fontFamily: font}"
   >
     <g-gantt-timeaxis
       v-if="!hideTimeaxis"
@@ -198,23 +198,3 @@ provide(INJECTION_KEYS.allBarsInChartKey, allBarsInChartByRow)
 provide(INJECTION_KEYS.gGanttChartPropsKey, { ...toRefs(props), gGanttChart })
 provide(INJECTION_KEYS.emitBarEventKey, emitBarEvent)
 </script>
-
-<style scoped>
-#g-gantt-chart{
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  border-radius: 5px;
-}
-
-#g-gantt-rows-container{
-  position: relative;
-}
-</style>

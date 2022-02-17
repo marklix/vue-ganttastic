@@ -28,7 +28,7 @@
 import useBarDragManagement from "../composables/useBarDragManagement"
 import useTimePositionMapping from "../composables/useTimePositionMapping"
 import useBarDragLimit from "../composables/useBarDragLimit"
-import { GanttBarObject } from "../models/models"
+import { GanttBarObject } from "@/models/models"
 import { defineProps, computed, ref, toRefs, inject, watch, nextTick } from "vue"
 import INJECTION_KEYS from "../models/symbols"
 
@@ -112,49 +112,3 @@ const barStyle = computed(() => {
 })
 
 </script>
-
-<style scoped>
-.g-gantt-bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: cadetblue;
-  overflow: hidden;
-}
-
-.g-gantt-bar-label {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 0 14px 0 14px;   /* 14px is the width of the handle */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.g-gantt-bar-label > * {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.g-gantt-bar-handle-left, .g-gantt-bar-handle-right {
-  position: absolute;
-  width: 10px;
-  height: 100%;
-  background: white;
-  opacity: 0.7;
-  border-radius: 0px;
-  cursor: w-resize;
-  top: 0;
-}
-.g-gantt-bar-handle-left {
-  left: 0;
-}
-.g-gantt-bar-handle-right {
-  right: 0;
-}
-
-.g-gantt-bar-label img {
-  pointer-events: none;
-}
-
-</style>

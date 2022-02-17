@@ -45,7 +45,7 @@ import useColorScheme from "../composables/useColorScheme"
 import useTimePositionMapping from "../composables/useTimePositionMapping"
 import INJECTION_KEYS from "../models/symbols"
 import { defineProps, defineEmits, inject, ref, Ref, toRefs, computed } from "vue"
-import { GanttBarObject } from "../models/models"
+import { GanttBarObject } from "@/models/models"
 import GGanttBar from "./GGanttBar.vue"
 
 const props = defineProps<{
@@ -90,46 +90,3 @@ const onDrop = (e: MouseEvent) => {
 }
 
 </script>
-
-<style scoped>
-  .g-gantt-row {
-    width: 100%;
-    transition: background 0.4s;
-    position: relative;
-  }
-
-  .g-gantt-row > .g-gantt-row-bars-container{
-    position: relative;
-    border-top: 1px solid #eaeaea;
-    width: 100%;
-    border-bottom: 1px solid #eaeaea;
-  }
-
-  .g-gantt-row-label {
-    position: absolute;
-    top:0;
-    left: 0px;
-    padding: 0px 8px;
-    display: flex;
-    align-items: center;
-    height: 60%;
-    min-height: 20px;
-    font-size: 0.8em;
-    font-weight: bold;
-    border-bottom-right-radius: 6px;
-    background: #f2f2f2;
-    z-index: 3;
-    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.6);
-  }
-
-.bar-transition-leave-active,
-.bar-transition-enter-active {
-  transition: .2s;
-}
-.bar-transition-enter-from {
-  transform: scale(0);
-}
-.bar-transition-leave-to {
-  transform: scale(0);
-}
-</style>
