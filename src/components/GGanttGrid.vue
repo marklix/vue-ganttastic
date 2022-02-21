@@ -3,10 +3,9 @@
     <div
       v-for="{label, value, width} in timeaxisUnits.lowerUnits"
       :key="label"
-      class="g-grid-line"
+      :class="(highlightedUnits.includes(Number(value)) ? 'highlight' : '') + ' g-grid-line'"
       :style="{
         width,
-        background: highlightedUnits.includes(Number(value)) ? colors.hoverHighlight : null
       }"
     />
   </div>
@@ -27,6 +26,5 @@ const gGanttChartPropsRefs = inject(INJECTION_KEYS.gGanttChartPropsKey)
 if (!gGanttChartPropsRefs) {
   throw new Error("GGanttBar: Provide/Inject of values from GGanttChart failed!")
 }
-const { colors } = useColorScheme(gGanttChartPropsRefs)
 const { timeaxisUnits } = useTimeaxisUnits(gGanttChartPropsRefs)
 </script>

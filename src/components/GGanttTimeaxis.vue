@@ -4,9 +4,9 @@
       <div
         v-for="({ label, value, width }, index) in timeaxisUnits.upperUnits"
         :key="label"
-        class="g-upper-timeunit"
+        :class="(index % 2 === 0 ? 'primary-color' : 'secondary-color') +' g-upper-timeunit'"
         :style="{
-          background: index % 2 === 0 ? colors.primary : colors.secondary,
+          background: index % 2 === 0 ? '#f9fafd' : colors.secondary,
           color: colors.text,
           width
         }"

@@ -10,7 +10,6 @@
   >
     <div
       class="g-gantt-row-label"
-      :style="{background: colors.primary, color: colors.text}"
     >
       <slot name="label">
         {{ label }}
@@ -41,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import useColorScheme from "../composables/useColorScheme"
 import useTimePositionMapping from "../composables/useTimePositionMapping"
 import INJECTION_KEYS from "../models/symbols"
 import { defineProps, defineEmits, inject, ref, Ref, toRefs, computed } from "vue"
@@ -63,7 +61,7 @@ const gGanttChartPropsRefs = inject(INJECTION_KEYS.gGanttChartPropsKey)
 if (!gGanttChartPropsRefs) {
   throw Error("GGanttRow: Failed to inject GGanttChart props!")
 }
-const { colors } = useColorScheme(gGanttChartPropsRefs)
+
 const { rowHeight } = gGanttChartPropsRefs
 const { highlightOnHover } = toRefs(props)
 const isHovering = ref(false)
@@ -71,7 +69,7 @@ const isHovering = ref(false)
 const rowStyle = computed(() => {
   return {
     height: `${rowHeight.value}px`,
-    background: highlightOnHover?.value && isHovering.value ? colors.value.hoverHighlight : null
+    background: highlightOnHover?.value && isHovering.value ? "rgba(204, 216, 219, 0.5)" : null
   }
 })
 
