@@ -9,7 +9,6 @@
       :chart-start="chartStart"
       :chart-end="chartEnd"
       :precision="precision"
-      :colors="colors"
     >
       <template #upper-timeunit="{label, value}">
         <!-- expose upper-timeunit slot of g-gantt-timeaxis-->
@@ -53,7 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import colorSchemes from "../color-schemes"
 import GGanttTimeaxis from "./GGanttTimeaxis.vue"
 import GGanttGrid from "./GGanttGrid.vue"
 import GGanttBarTooltip from "./GGanttBarTooltip.vue"
@@ -70,7 +68,6 @@ interface GGanttChartProps {
   dateFormat?: string
   width?: string
   hideTimeaxis?: boolean
-  colorScheme?: string
   grid?: boolean
   pushOnOverlap?: boolean
   noOverlap?: boolean
@@ -84,7 +81,6 @@ const props = withDefaults(defineProps<GGanttChartProps>(), {
   precision: "day",
   width: "100%",
   hideTimeaxis: false,
-  colorScheme: "default",
   grid: false,
   pushOnOverlap: false,
   noOverlap: false,
@@ -108,9 +104,6 @@ const emit = defineEmits<{
 
 const { chartStart, chartEnd, precision, width, font } = toRefs(props)
 const slots = useSlots()
-const colors = computed(() => {
-  return colorSchemes[props.colorScheme] || colorSchemes.default
-})
 
 const allBarsInChartByRow = computed(() => {
   const defaultSlot = slots.default?.()

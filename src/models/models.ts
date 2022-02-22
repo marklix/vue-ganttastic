@@ -26,7 +26,6 @@ export type GGanttChartPropsRefs = {
   dateFormat: Ref<string>
   width: Ref<string>
   hideTimeaxis: Ref<boolean>
-  colorScheme: Ref<string>
   grid: Ref<boolean>
   pushOnOverlap: Ref<boolean>
   noOverlap: Ref<boolean>

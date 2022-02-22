@@ -289,7 +289,7 @@ const onContextmenuBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) 
 .g-timeunits-container .primary-color {
   background-color: #f9fafd;
 }
-.g-timeunits-container .secondary {
+.g-timeunits-container .secondary-color {
   background-color: #edf2f9;
 }
 
@@ -311,6 +311,7 @@ const onContextmenuBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) 
 .g-timeaxis-hour-pin {
   width: 1px;
   height: 10px;
+  background: #333;
 }
 #g-timeaxis-marker {
   position: absolute;
