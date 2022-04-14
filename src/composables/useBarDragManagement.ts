@@ -10,7 +10,8 @@ export default function useBarDragManagement (
     e: MouseEvent,
     bar: GanttBarObject,
     datetime?: string,
-    movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string}>
+    movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string}>,
+    newRowId?: string,
   ) => void
 ) {
   const movedBarsInDrag = new Map<GanttBarObject, {oldStart: string, oldEnd: string}>()
@@ -49,12 +50,12 @@ export default function useBarDragManagement (
     }
   }
 
-  const onDrag = (e: MouseEvent, bar: GanttBarObject) => {
+  const onDrag = (e: MouseEvent, bar: GanttBarObject, newRowId: string) => {
     const ev = {
       ...e,
       type: "drag"
     }
-    emitBarEvent(ev, bar)
+    emitBarEvent(ev, bar, undefined, undefined, newRowId)
     fixOverlaps(bar)
   }
 
@@ -111,8 +112,8 @@ export default function useBarDragManagement (
                         otherBarEnd.isBetween(ganttBarStart, ganttBarEnd)
       return overlapLeft || overlapRight || overlapInBetween
     })
-    let overlapType : "left" | "right" | "between" | null = null
-    overlapType = overlapLeft ? "left" : (overlapRight ? "right" : (overlapInBetween ? "between" : null))
+    const overlapType : "left" | "right" | "between" | null = overlapLeft ? "left" : (overlapRight ? "right" : (overlapInBetween ? "between" : null))
+
     return { overlapBar, overlapType }
   }
 

@@ -97,7 +97,7 @@ const emit = defineEmits<{
   (e: "mouseenter-bar", value: {bar: GanttBarObject, e: MouseEvent}) : void
   (e: "mouseleave-bar", value: {bar: GanttBarObject, e: MouseEvent}) : void
   (e: "dragstart-bar", value: {bar: GanttBarObject, e: MouseEvent}) : void
-  (e: "drag-bar", value: {bar: GanttBarObject, e: MouseEvent}) : void
+  (e: "drag-bar", value: {bar: GanttBarObject, e: MouseEvent, newRowId?: string}) : void
   (e: "dragend-bar", value: {bar: GanttBarObject, e: MouseEvent, movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string}>}) : void
   (e: "contextmenu-bar", value: {bar: GanttBarObject, e: MouseEvent, datetime?: string }) : void
 }>()
@@ -158,7 +158,8 @@ const emitBarEvent = (
   e: MouseEvent,
   bar: GanttBarObject,
   datetime?: string,
-  movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string}>
+  movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string}>,
+  newRowId?: string
 ) => {
   switch (e.type) {
     case "mousedown": emit("mousedown-bar", { bar, e, datetime }); break
@@ -176,7 +177,7 @@ const emitBarEvent = (
       isDragging.value = true
       emit("dragstart-bar", { bar, e })
       break
-    case "drag": emit("drag-bar", { bar, e }); break
+    case "drag": emit("drag-bar", { bar, e, newRowId }); break
     case "dragend":
       isDragging.value = false
       emit("dragend-bar", { bar, e, movedBars })

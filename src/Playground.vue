@@ -6,7 +6,7 @@
     :row-height="40"
     grid
     width="100%"
-    bar-start="beginDate"
+    bar-start="startDate"
     bar-end="endDate"
     :date-format="format"
     no-overlap
@@ -16,17 +16,21 @@
     @mouseenter-bar="onMouseenterBar($event.bar, $event.e)"
     @mouseleave-bar="onMouseleaveBar($event.bar, $event.e)"
     @dragstart-bar="onDragstartBar($event.bar, $event.e)"
-    @drag-bar="onDragBar($event.bar, $event.e)"
+    @drag-bar="onDragBar($event.bar, $event.e, $event.newRowId)"
     @dragend-bar="onDragendBar($event.bar, $event.e, $event.movedBars)"
     @contextmenu-bar="onContextmenuBar($event.bar, $event.e, $event.datetime)"
   >
     <g-gantt-row
-      v-for="(bar, idx) in bars1"
-      :key="idx"
-      :label="'My row' + idx"
-      :bars="bar"
-      highlight-on-hover
-    />
+      v-for="rowBar in bars1"
+      :id="rowBar.id ? rowBar.id : ''"
+      :key="rowBar.id"
+      :label="rowBar.device.name"
+      :bars="rowBar.bars"
+    >
+      <template #bar-label="{ bar }">
+        {{ bar.ganttBarConfig.label }}
+      </template>
+    </g-gantt-row>
   </g-gantt-chart>
 
   <button @click="addBar()">
@@ -43,65 +47,91 @@ import GGanttRow from "./components/GGanttRow.vue"
 import GGanttChart from "./components/GGanttChart.vue"
 import { GanttBarObject } from "./models/models"
 
-const chartStart = ref("2022-12-11 00:00")
-const chartEnd = ref("2022-12-11 23:59")
+const chartStart = ref("2022-03-28 00:00")
+const chartEnd = ref("2022-03-28 23:59")
 const format = ref("YYYY-MM-DD HH:mm")
 
 const bars1 = ref([
-  [
-    {
-      beginDate: "2022-12-11 16:00",
-      endDate: "2022-12-11 18:00",
-      gapMs: 7200000,
-      ganttBarConfig: {
-        id: "8621987329",
-        label: "I'm in a bundle"
-      }
-    }
-  ],
-  [
-    {
-      beginDate: "2022-12-11 11:00",
-      endDate: "2022-12-11 12:00",
-      gapMs: 3600000,
-      ganttBarConfig: {
-        id: "1592311887",
-        label: "I'm in a bundle",
-        style: {
-          background: "magenta"
+  {
+    id: "60354f7a5f1b9c301d7d7f58",
+    device: {
+      id: "60354f7a5f1b9c301d7d7f58",
+      name: "Formiga P110 Velocis",
+      serial: "ABCDEF123456"
+    },
+    bars: [
+      {
+        startDate: "2022-03-28 15:42",
+        endDate: "2022-03-28 21:07",
+        gapMs: 19500000,
+        device: "60354f7a5f1b9c301d7d7f58",
+        items: [],
+        ganttBarConfig: {
+          id: "623a713e84226bb7c3214f0d",
+          label: "zerzer",
+          hasHandles: true,
+          style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
+        }
+      },
+      {
+        startDate: "2022-03-28 05:07",
+        endDate: "2022-03-28 11:34",
+        gapMs: 23220000,
+        device: "60354f7a5f1b9c301d7d7f58",
+        items: ["6238acf81a71fff5ccdc8ac8"],
+        ganttBarConfig: {
+          id: "624175ab908749b66d60a74e",
+          label: "Batch P110",
+          hasHandles: true,
+          style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
         }
       }
+    ]
+  },
+  {
+    id: "61f0fe1384183f00fdd7ad78",
+    device: {
+      id: "61f0fe1384183f00fdd7ad78",
+      name: "Integra P450",
+      serial: "ABCDE0123456"
     },
-    {
-      beginDate: "2022-12-11 08:00",
-      endDate: "2022-12-11 10:00",
-      gapMs: 7200000,
+    bars: [{
+      startDate: "2022-03-28 08:41",
+      endDate: "2022-03-28 13:37",
+      gapMs: 17760000,
+      device: "61f0fe1384183f00fdd7ad78",
+      items: ["6238acf61a71fff5ccdc8ac5"],
       ganttBarConfig: {
-        id: "7716981641",
-        label: "Lorem ipsum dolor",
+        id: "62417507908749b66d60a747",
+        label: "Batch P450",
         hasHandles: true,
-        style: {
-          background: "#b74b52"
-        }
+        style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
       }
+    }]
+  },
+  {
+    id: "61f0fe1384183f00fdd7ad48",
+    device: {
+      id: "61f0fe1384183f00fdd7ad48",
+      name: "Integra P330",
+      serial: "ABCDE0123421"
     },
-    {
-      beginDate: "2022-12-11 17:00",
-      endDate: "2022-12-11 18:00",
-      gapMs: 3600000,
+    bars: [{
+      startDate: "2022-03-28 08:41",
+      endDate: "2022-03-28 13:37",
+      gapMs: 17760000,
+      device: "61f0fe1384183f00fdd7ad48",
+      items: [],
       ganttBarConfig: {
-        id: "9716981641",
-        label: "Oh hey",
-        style: {
-          background: "#69e064",
-          borderRadius: "15px",
-          color: "blue",
-          fontSize: "10px"
-        }
+        id: "62417507908749b66d60a737",
+        label: "Batch P330",
+        hasHandles: true,
+        style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
       }
-    }
-  ]
-])
+    }]
+  }
+]
+)
 
 const bars2 = ref([
   {
@@ -174,27 +204,45 @@ const deleteBar = () => {
 }
 
 const onMousedownBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) => {
-  console.log("mousedown-bar", bar, e, datetime)
+  // console.log("mousedown-bar", bar, e, datetime)
 }
 
 const onMouseupBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) => {
-  console.log("mouseup-bar", bar, e, datetime)
+  // console.log("mouseup-bar", bar, e, datetime)
 }
 
 const onMouseenterBar = (bar: GanttBarObject, e:MouseEvent) => {
-  console.log("mouseenter-bar", bar, e)
+  // console.log("mouseenter-bar", bar, e)
 }
 
 const onMouseleaveBar = (bar: GanttBarObject, e:MouseEvent) => {
-  console.log("mouseleave-bar", bar, e)
+  // console.log("mouseleave-bar", bar, e)
 }
 
 const onDragstartBar = (bar: GanttBarObject, e:MouseEvent) => {
-  console.log("dragstart-bar", bar, e)
+  // console.log(JSON.parse(JSON.stringify(bar)))
 }
+const onDragBar = (bar: GanttBarObject, e:MouseEvent, newRowId: string) => {
+  // console.log(newRowId)
+  let foundBar
+  if (newRowId !== "") {
+    const newRow = bars1.value.find(newDevice => newDevice.id === newRowId)
+    for (const device of bars1.value) {
+      foundBar = device.bars.find(b => b.ganttBarConfig.id === bar.ganttBarConfig.id)
+      if (foundBar) {
+        const index = device.bars.indexOf(foundBar)
+        if (newRow && foundBar) {
+          newRow.bars.push(foundBar)
+        }
+        if (index !== -1) {
+          device.bars.splice(index, 1)
+        }
+      }
+    }
+  }
 
-const onDragBar = (bar: GanttBarObject, e:MouseEvent) => {
-  console.log("drag-bar", bar, e)
+  // console.log(bar.ganttBarConfig.id)
+  // console.log("drag-bar", bar, e)
 }
 
 const onDragendBar = (bar: GanttBarObject, e:MouseEvent, movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string}>) => {
@@ -240,7 +288,7 @@ const onContextmenuBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) 
 
 .bar-transition-leave-active,
 .bar-transition-enter-active {
-  transition: .2s;
+  transition: 0s;
 }
 .bar-transition-enter-from {
   transform: scale(0);
