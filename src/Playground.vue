@@ -133,73 +133,41 @@ const bars1 = ref([
 ]
 )
 
-const bars2 = ref([
-  {
-    beginDate: "2022-12-11 11:00",
-    endDate: "2022-12-11 12:00",
-    gapMs: 3600000,
-    ganttBarConfig: {
-      id: "1592311887",
-      label: "I'm in a bundle",
-      style: {
-        background: "magenta"
-      }
-    }
-  },
-  {
-    beginDate: "2022-12-11 08:00",
-    endDate: "2022-12-11 10:00",
-    gapMs: 7200000,
-    ganttBarConfig: {
-      id: "7716981641",
-      label: "Lorem ipsum dolor",
-      hasHandles: true,
-      style: {
-        background: "#b74b52"
-      }
-    }
-  },
-  {
-    beginDate: "2022-12-11 17:00",
-    endDate: "2022-12-11 18:00",
-    gapMs: 3600000,
-    ganttBarConfig: {
-      id: "9716981641",
-      label: "Oh hey",
-      style: {
-        background: "#69e064",
-        borderRadius: "15px",
-        color: "blue",
-        fontSize: "10px"
-      }
-    }
-  }
-])
 const addBar = () => {
-  if (bars1.value[0].some(bar => bar.ganttBarConfig.id === "test1")) {
-    return
+  for (const row of bars1.value) {
+    if (row.bars.some(bar => bar.ganttBarConfig.id === "62417507908749b66d60b231")) {
+      return
+    }
   }
   const bar = {
-    beginDate: "2022-12-11 08:00",
-    endDate: "2022-12-11 10:00",
-    gapMs: 7200000,
+    startDate: "2022-03-28 19:00",
+    endDate: "2022-03-28 22:15",
+    gapMs: 11700000,
+    device: "61f0fe1384183f00fdd7ad48",
+    items: [],
     ganttBarConfig: {
-      id: "test1",
+      id: "62417507908749b66d60b231",
+      label: "Batch P330 - 2",
       hasHandles: true,
-      label: "Hello!",
-      style: {
-        background: "#5484b7",
-        borderRadius: "20px"
-      }
+      style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
     }
   }
-  bars1.value[0].push(bar)
+  const newRow = bars1.value.find(row => row.id === "61f0fe1384183f00fdd7ad48")
+  if (newRow) {
+    newRow.bars.push(bar)
+  }
 }
 
 const deleteBar = () => {
-  const idx = bars1.value[0].findIndex(b => b.ganttBarConfig.id === "test1")
+  for (const row of bars1.value) {
+    const idx = row.bars.findIndex(b => b.ganttBarConfig.id === "62417507908749b66d60b231")
+    if (idx !== -1) {
+      row.bars.splice(idx, 1)
+    }
+  }
+  const idx = bars1.value[1].bars.findIndex(b => b.ganttBarConfig.id === "62417507908749b66d60b231")
   if (idx !== -1) {
-    bars1.value[0].splice(idx, 1)
+    bars1.value[1].bars.splice(idx, 1)
   }
 }
 
@@ -220,37 +188,47 @@ const onMouseleaveBar = (bar: GanttBarObject, e:MouseEvent) => {
 }
 
 const onDragstartBar = (bar: GanttBarObject, e:MouseEvent) => {
-  // console.log(JSON.parse(JSON.stringify(bar)))
+  // console.log("dragstart-bar", bar, e)
 }
 const onDragBar = (bar: GanttBarObject, e:MouseEvent, newRowId: string) => {
-  // console.log(newRowId)
   let foundBar
   if (newRowId !== "") {
-    const newRow = bars1.value.find(newDevice => newDevice.id === newRowId)
-    for (const device of bars1.value) {
-      foundBar = device.bars.find(b => b.ganttBarConfig.id === bar.ganttBarConfig.id)
+    const newRow = bars1.value.find(row => row.id === newRowId)
+    for (const eachBar of bars1.value) {
+      foundBar = eachBar.bars.find(b => b.ganttBarConfig.id === bar.ganttBarConfig.id)
       if (foundBar) {
-        const index = device.bars.indexOf(foundBar)
+        const index = eachBar.bars.indexOf(foundBar)
         if (newRow && foundBar) {
           newRow.bars.push(foundBar)
         }
         if (index !== -1) {
-          device.bars.splice(index, 1)
+          eachBar.bars.splice(index, 1)
         }
       }
     }
   }
-
-  // console.log(bar.ganttBarConfig.id)
-  // console.log("drag-bar", bar, e)
 }
 
-const onDragendBar = (bar: GanttBarObject, e:MouseEvent, movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string}>) => {
-  console.log("dragend-bar", bar, e, movedBars)
+const onDragendBar = (bar: GanttBarObject, e:MouseEvent, movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string, oldRow: string}>) => {
+  // console.log("dragend-bar", bar, e, movedBars)
+  const deleteBarRow = bars1.value.find(row => row.bars.find((b) => Object.entries(b).toString() === Object.entries(bar).toString()))
+  if (deleteBarRow && deleteBarRow.id !== bar.device) {
+    const foundBar = deleteBarRow.bars.find(b => b.ganttBarConfig.id === bar.ganttBarConfig.id)
+    if (foundBar) {
+      const index = deleteBarRow.bars.indexOf(foundBar)
+      if (index !== -1) {
+        deleteBarRow.bars.splice(index, 1)
+      }
+    }
+    const addBarRow = bars1.value.find(row => row.id === bar.device)
+    if (addBarRow && foundBar) {
+      addBarRow.bars.push(foundBar)
+    }
+  }
 }
 
 const onContextmenuBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) => {
-  console.log("contextmenu-bar", bar, e, datetime)
+  // console.log("contextmenu-bar", bar, e, datetime)
 }
 </script>
 <style>
