@@ -10,11 +10,11 @@ export default function useBarDragManagement (
     e: MouseEvent,
     bar: GanttBarObject,
     datetime?: string,
-    movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string}>,
+    movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string, oldRow: string}>,
     newRowId?: string,
   ) => void
 ) {
-  const movedBarsInDrag = new Map<GanttBarObject, {oldStart: string, oldEnd: string}>()
+  const movedBarsInDrag = new Map<GanttBarObject, {oldStart: string, oldEnd: string, oldRow: string}>()
 
   const { pushOnOverlap, barStart, barEnd, noOverlap, dateFormat } = gGanttChartPropsRefs
   const { toDayjs, differenceDayjs } = useDayjsHelper(gGanttChartPropsRefs)
@@ -59,6 +59,7 @@ export default function useBarDragManagement (
     fixOverlaps(bar)
   }
 
+  /* Only works if pushOnOverlap is enabled */
   const fixOverlaps = (ganttBar: GanttBarObject) => {
     if (!pushOnOverlap.value) {
       return
@@ -106,17 +107,17 @@ export default function useBarDragManagement (
       }
       const otherBarStart = toDayjs(otherBar[barStart.value])
       const otherBarEnd = toDayjs(otherBar[barEnd.value])
-      overlapLeft = ganttBarStart.isBetween(otherBarStart, otherBarEnd)
-      overlapRight = ganttBarEnd.isBetween(otherBarStart, otherBarEnd)
-      overlapInBetween = otherBarStart.isBetween(ganttBarStart, ganttBarEnd) ||
-                        otherBarEnd.isBetween(ganttBarStart, ganttBarEnd)
+      overlapLeft = ganttBarStart.isBetween(otherBarStart, otherBarEnd, null, "[]")
+      overlapRight = ganttBarEnd.isBetween(otherBarStart, otherBarEnd, null, "[]")
+      overlapInBetween = otherBarStart.isBetween(ganttBarStart, ganttBarEnd, null, "[]") ||
+                        otherBarEnd.isBetween(ganttBarStart, ganttBarEnd, null, "[]")
       return overlapLeft || overlapRight || overlapInBetween
     })
     const overlapType : "left" | "right" | "between" | null = overlapLeft ? "left" : (overlapRight ? "right" : (overlapInBetween ? "between" : null))
 
     return { overlapBar, overlapType }
   }
-
+  /* Only works if pushOnOverlap is enabled */
   const moveBundleOfPushedBarByMinutes = (pushedBar: GanttBarObject, minutes: number, direction: "left" | "right") => {
     addBarToMovedBars(pushedBar)
     if (pushedBar.ganttBarConfig.bundle) {
@@ -130,7 +131,7 @@ export default function useBarDragManagement (
       })
     }
   }
-
+  /* Only works if pushOnOverlap is enabled */
   const moveBarByMinutes = (bar: GanttBarObject, minutes: number, direction: "left" | "right") => {
     switch (direction) {
       case "left":
@@ -158,7 +159,8 @@ export default function useBarDragManagement (
     if (!movedBarsInDrag.has(bar)) {
       const oldStart = bar[barStart.value]
       const oldEnd = bar[barEnd.value]
-      movedBarsInDrag.set(bar, { oldStart, oldEnd })
+      const oldRow = bar.device
+      movedBarsInDrag.set(bar, { oldStart, oldEnd, oldRow })
     }
   }
 
@@ -172,9 +174,17 @@ export default function useBarDragManagement (
         }
       })
       if (isAnyOverlap) {
-        movedBarsInDrag.forEach(({ oldStart, oldEnd }, bar) => {
+        movedBarsInDrag.forEach(({ oldStart, oldEnd, oldRow }, bar) => {
+          const oldRowElement = document.getElementById(oldRow)
+          const barElement = document.getElementById(bar.ganttBarConfig.id)
+          const rowToRollback = barElement?.closest(".g-gantt-row")
+          if (oldRowElement && rowToRollback && barElement && (oldRowElement.id !== rowToRollback.id)) {
+            const { move } = useBarDrag(ref(bar), gGanttChartPropsRefs, onDrag, onEndDrag)
+            move(oldRowElement, rowToRollback, barElement)
+          }
           bar[barStart.value] = oldStart
           bar[barEnd.value] = oldEnd
+          bar.device = oldRow
           bar.gapMs = differenceDayjs(bar[barStart.value], bar[barEnd.value])
         })
       }

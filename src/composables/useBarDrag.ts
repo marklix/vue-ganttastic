@@ -44,11 +44,15 @@ export default function useBarDrag (
     const barElement = document.getElementById(bar.value.ganttBarConfig.id)
     const oldRow = barElement?.closest(".g-gantt-row")
     const newRow = document.elementFromPoint(e.clientX, e.clientY)?.closest(".g-gantt-row")
+
+    // Case for changing row
     if (oldRow && newRow && barElement && (oldRow.id !== newRow.id)) {
       move(oldRow, newRow, barElement)
+      bar.value.device = newRow.id
       onDrag(e, bar.value, newRow.id)
     }
 
+    // Case for changing time
     const barContainer = barElement?.closest(".g-gantt-row-bars-container")?.getBoundingClientRect()
     if (barElement && barContainer) {
       const barWidth = barElement.getBoundingClientRect().width
@@ -64,6 +68,7 @@ export default function useBarDrag (
     }
   }
 
+  /* Update DOM when changing row */
   const move = (oldParent: Element, newParent: Element, movedElement: Element) => {
     for (const oldParentChild of Array.from(oldParent.children)) {
       if (oldParentChild.id === oldParent.id) {
@@ -74,8 +79,6 @@ export default function useBarDrag (
         }
       }
     }
-
-    console.log(newParent)
   }
 
   const dragByLeftHandle = (e: MouseEvent) => {
@@ -152,6 +155,7 @@ export default function useBarDrag (
 
   return {
     isDragging,
-    initDrag
+    initDrag,
+    move
   }
 }
