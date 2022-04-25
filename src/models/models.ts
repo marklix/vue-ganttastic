@@ -31,4 +31,5 @@ export type GGanttChartPropsRefs = {
   noOverlap: Ref<boolean>
   gGanttChart: Ref<HTMLElement | null>
   font: Ref<string>
+  minimumGap: Ref<number>
 }

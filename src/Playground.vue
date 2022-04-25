@@ -11,6 +11,7 @@
     :date-format="format"
     no-overlap
     :highlighted-units="[6,12,18]"
+    :minimum-gap="120"
     style="margin: 0 10%"
     @mousedown-bar="onMousedownBar($event.bar, $event.e, $event.datetime)"
     @dblclick-bar="onMouseupBar($event.bar, $event.e, $event.datetime)"

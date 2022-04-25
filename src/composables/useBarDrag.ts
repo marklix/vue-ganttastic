@@ -10,7 +10,7 @@ export default function useBarDrag (
   onDrag: (e: MouseEvent, bar: GanttBarObject, newRowId: string) => void = () => null,
   onEndDrag: (e: MouseEvent, bar: GanttBarObject) => void = () => null
 ) {
-  const { barStart, barEnd, pushOnOverlap, dateFormat } = gGanttChartPropsRefs
+  const { barStart, barEnd, pushOnOverlap, dateFormat, minimumGap } = gGanttChartPropsRefs
   const isDragging = ref(false)
   let cursorOffsetX = 0
   let dragCallBack : (e: MouseEvent) => void
@@ -92,8 +92,8 @@ export default function useBarDrag (
       }
 
       // Keep the minimum Gap size between start Date and end Date
-      if (toDayjs(newBarStart).isSameOrAfter(dayjs(bar.value[barEnd.value]).subtract(30 * 60, "s"))) {
-        bar.value[barStart.value] = dayjs(bar.value[barEnd.value]).subtract(30 * 60, "s").format(dateFormat.value)
+      if (toDayjs(newBarStart).isSameOrAfter(dayjs(bar.value[barEnd.value]).subtract(minimumGap.value * 60, "s"))) {
+        bar.value[barStart.value] = dayjs(bar.value[barEnd.value]).subtract(minimumGap.value * 60, "s").format(dateFormat.value)
         return
       }
 
@@ -115,8 +115,8 @@ export default function useBarDrag (
       }
 
       // Keep the minimum Gap size between start Date and end Date
-      if (toDayjs(newBarEnd).isSameOrBefore(dayjs(bar.value[barStart.value]).add(30 * 60, "s"))) {
-        bar.value[barEnd.value] = dayjs(bar.value[barStart.value]).add(30 * 60, "s").format(dateFormat.value)
+      if (toDayjs(newBarEnd).isSameOrBefore(dayjs(bar.value[barStart.value]).add(minimumGap.value * 60, "s"))) {
+        bar.value[barEnd.value] = dayjs(bar.value[barStart.value]).add(minimumGap.value * 60, "s").format(dateFormat.value)
         return
       }
 

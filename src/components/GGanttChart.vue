@@ -74,6 +74,7 @@ interface GGanttChartProps {
   rowHeight?: number
   highlightedUnits?: number[]
   font?: string
+  minimumGap?: number
 }
 
 const props = withDefaults(defineProps<GGanttChartProps>(), {
@@ -86,7 +87,8 @@ const props = withDefaults(defineProps<GGanttChartProps>(), {
   noOverlap: false,
   rowHeight: 40,
   highlightedUnits: () => [],
-  font: "Helvetica"
+  font: "Helvetica",
+  minimumGap: 60
 })
 
 // eslint-disable-next-line func-call-spacing
