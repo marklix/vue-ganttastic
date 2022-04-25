@@ -44,14 +44,20 @@ if (!gGanttChartPropsRefs) {
 
 const tooltipTop = ref("0px")
 const tooltipLeft = ref("0px")
-watch(bar, () => {
+watch(() => bar, () => {
+  const barId = bar?.value?.ganttBarConfig.id || ""
+  const barElement = document.getElementById(barId)
   nextTick(() => {
-    const barId = bar?.value?.ganttBarConfig.id || ""
     if (barId) {
-      const barElement = document.getElementById(barId)
       let { top, left } = barElement?.getBoundingClientRect() || { top: 0, left: 0 }
       const { rowHeight } = gGanttChartPropsRefs
-      left = Math.max(left, 10)
+
+      // There is a bug that randomly changes the place of tooltip when changing row, this is a workaround for it
+      if (barElement?.offsetLeft && (left > barElement?.offsetLeft)) {
+        left = barElement?.offsetLeft + 10
+      } else {
+        left = Math.max(left, 10)
+      }
       tooltipTop.value = `${top + rowHeight.value - 10}px`
       tooltipLeft.value = `${left}px`
     }

@@ -162,11 +162,17 @@ const emitBarEvent = (
   newRowId?: string
 ) => {
   switch (e.type) {
-    case "mousedown": emit("mousedown-bar", { bar, e, datetime }); break
-    case "mouseup": emit("mouseup-bar", { bar, e, datetime }); break
+    case "mousedown":
+      initTooltip(bar)
+      emit("mousedown-bar", { bar, e, datetime })
+      break
+    case "mouseup":
+      emit("mouseup-bar", { bar, e, datetime }); break
     case "dblclick": emit("dblclick-bar", { bar, e, datetime }); break
     case "mouseenter":
-      initTooltip(bar)
+      if (!isDragging.value) {
+        initTooltip(bar)
+      }
       emit("mouseenter-bar", { bar, e })
       break
     case "mouseleave":
@@ -177,7 +183,9 @@ const emitBarEvent = (
       isDragging.value = true
       emit("dragstart-bar", { bar, e })
       break
-    case "drag": emit("drag-bar", { bar, e, newRowId }); break
+    case "drag":
+      emit("drag-bar", { bar, e, newRowId })
+      break
     case "dragend":
       isDragging.value = false
       emit("dragend-bar", { bar, e, movedBars })
