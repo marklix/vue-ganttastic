@@ -97,7 +97,7 @@ export default function useBarDragManagement (
   }
 
   const getOverlapBarAndType = (ganttBar: GanttBarObject) => {
-    let overlapLeft, overlapRight, overlapInBetween
+    let overlapLeft, overlapRight, overlapInBetween, overlapSameSize
     const allBarsInRow = allRowsInChart.value.find(row => row.includes(ganttBar)) || []
     const ganttBarStart = toDayjs(ganttBar[barStart.value])
     const ganttBarEnd = toDayjs(ganttBar[barEnd.value])
@@ -107,11 +107,12 @@ export default function useBarDragManagement (
       }
       const otherBarStart = toDayjs(otherBar[barStart.value])
       const otherBarEnd = toDayjs(otherBar[barEnd.value])
-      overlapLeft = ganttBarStart.isBetween(otherBarStart, otherBarEnd, null, "[]")
-      overlapRight = ganttBarEnd.isBetween(otherBarStart, otherBarEnd, null, "[]")
-      overlapInBetween = otherBarStart.isBetween(ganttBarStart, ganttBarEnd, null, "[]") ||
-                        otherBarEnd.isBetween(ganttBarStart, ganttBarEnd, null, "[]")
-      return overlapLeft || overlapRight || overlapInBetween
+      overlapLeft = ganttBarStart.isBetween(otherBarStart, otherBarEnd)
+      overlapRight = ganttBarEnd.isBetween(otherBarStart, otherBarEnd)
+      overlapInBetween = otherBarStart.isBetween(ganttBarStart, ganttBarEnd) ||
+                        otherBarEnd.isBetween(ganttBarStart, ganttBarEnd)
+      overlapSameSize = ganttBarStart.isBetween(otherBarStart, otherBarEnd, null, "[]") && ganttBarEnd.isBetween(otherBarStart, otherBarEnd, null, "[]")
+      return overlapLeft || overlapRight || overlapInBetween || overlapSameSize
     })
     const overlapType : "left" | "right" | "between" | null = overlapLeft ? "left" : (overlapRight ? "right" : (overlapInBetween ? "between" : null))
 
