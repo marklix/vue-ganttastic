@@ -10,7 +10,10 @@
     @mouseleave="onMouseEvent"
     @contextmenu="onMouseEvent"
   >
-    <div class="g-gantt-bar-label">
+    <div
+      class="g-gantt-bar-label"
+      style="text-align:center"
+    >
       <slot :bar="bar">
         <div>
           {{ bar.ganttBarConfig.label || "" }}
