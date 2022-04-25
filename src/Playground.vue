@@ -5,12 +5,13 @@
     precision="hour"
     :row-height="40"
     grid
-    width="100%"
+    width="80%"
     bar-start="startDate"
     bar-end="endDate"
     :date-format="format"
     no-overlap
     :highlighted-units="[6,12,18]"
+    style="margin: 0 10%"
     @mousedown-bar="onMousedownBar($event.bar, $event.e, $event.datetime)"
     @dblclick-bar="onMouseupBar($event.bar, $event.e, $event.datetime)"
     @mouseenter-bar="onMouseenterBar($event.bar, $event.e)"
