@@ -26,6 +26,7 @@
       :key="rowBar.id"
       :label="rowBar.device.name"
       :bars="rowBar.bars"
+      @dblclick-row="onDoubleClickRow($event.e, $event.id, $event.datetime)"
     >
       <template #bar-label="{ bar }">
         {{ bar.ganttBarConfig.label }}
@@ -229,6 +230,10 @@ const onDragendBar = (bar: GanttBarObject, e:MouseEvent, movedBars?: Map<GanttBa
 
 const onContextmenuBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) => {
   // console.log("contextmenu-bar", bar, e, datetime)
+}
+
+const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
+  console.log(e, id, datetime)
 }
 </script>
 <style>
