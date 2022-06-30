@@ -72,6 +72,7 @@ const bars1 = ref([
         ganttBarConfig: {
           id: "623a713e84226bb7c3214f0d",
           label: "zerzer",
+          immobile: true,
           hasHandles: true,
           style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
         }
@@ -429,6 +430,10 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
   align-items: center;
   background: cadetblue;
   overflow: hidden;
+}
+
+.g-gantt-bar.immobile {
+  opacity: 0.5;
 }
 
 .g-gantt-bar-label {
