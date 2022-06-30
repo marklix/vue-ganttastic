@@ -1,7 +1,7 @@
 <template>
   <div
     :id="bar.ganttBarConfig.id"
-    class="g-gantt-bar"
+    :class="'g-gantt-bar ' + (bar.ganttBarConfig.immobile ? 'immobile' : '')"
     :style="barStyle"
     @mousedown="onMouseEvent"
     @mouseup="onMouseEvent"
@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import useBarDragManagement from "../composables/useBarDragManagement"
 import useTimePositionMapping from "../composables/useTimePositionMapping"
-import useBarDragLimit from "../composables/useBarDragLimit"
+// import useBarDragLimit from "../composables/useBarDragLimit"
 import { GanttBarObject } from "@/models/models"
 import { defineProps, computed, ref, toRefs, inject, watch, nextTick } from "vue"
 import INJECTION_KEYS from "../models/symbols"
@@ -50,12 +50,12 @@ const { bar } = toRefs(props)
 const { rowHeight } = gGanttChartPropsRefs
 const { mapTimeToPosition, mapPositionToTime } = useTimePositionMapping(gGanttChartPropsRefs)
 const { initDragOfBar, initDragOfBundle } = useBarDragManagement(allRowsInChart, gGanttChartPropsRefs, emitBarEvent)
-const { setDragLimitsOfGanttBar } = useBarDragLimit(allRowsInChart, gGanttChartPropsRefs)
+// const { setDragLimitsOfGanttBar } = useBarDragLimit(allRowsInChart, gGanttChartPropsRefs)
 
 const isDragging = ref(false)
 
 const prepareForDrag = () => {
-  setDragLimitsOfGanttBar(bar.value)
+  // setDragLimitsOfGanttBar(bar.value)
   if (!bar.value.ganttBarConfig.immobile) {
     const firstMousemoveCallback = (e: MouseEvent) => {
       bar.value.ganttBarConfig.bundle != null ? initDragOfBundle(bar.value, e) : initDragOfBar(bar.value, e)
