@@ -10,7 +10,7 @@
     bar-end="endDate"
     :date-format="format"
     no-overlap
-    :highlighted-units="[6,12,18]"
+    :highlighted-units="[6, 12, 18]"
     :minimum-gap="120"
     style="margin: 0 10%"
     @mousedown-bar="onMousedownBar($event.bar, $event.e, $event.datetime)"
@@ -36,23 +36,19 @@
     </g-gantt-row>
   </g-gantt-chart>
 
-  <button @click="addBar()">
-    Add bar
-  </button>
-  <button @click="deleteBar()">
-    Delete bar
-  </button>
+  <button @click="addBar()">Add bar</button>
+  <button @click="deleteBar()">Delete bar</button>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
-import GGanttRow from "./components/GGanttRow.vue"
-import GGanttChart from "./components/GGanttChart.vue"
-import { GanttBarObject } from "./models/models"
+import { ref } from "vue";
+import GGanttRow from "./components/GGanttRow.vue";
+import GGanttChart from "./components/GGanttChart.vue";
+import { GanttBarObject } from "./models/models";
 
-const chartStart = ref("2022-03-28 00:00")
-const chartEnd = ref("2022-03-28 23:59")
-const format = ref("YYYY-MM-DD HH:mm")
+const chartStart = ref("2022-03-28 00:00");
+const chartEnd = ref("2022-03-28 23:59");
+const format = ref("YYYY-MM-DD HH:mm");
 
 const bars1 = ref([
   {
@@ -60,7 +56,7 @@ const bars1 = ref([
     device: {
       id: "60354f7a5f1b9c301d7d7f58",
       name: "Formiga P110 Velocis",
-      serial: "ABCDEF123456"
+      serial: "ABCDEF123456",
     },
     bars: [
       {
@@ -74,8 +70,8 @@ const bars1 = ref([
           label: "zerzer",
           immobile: true,
           hasHandles: true,
-          style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
-        }
+          style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" },
+        },
       },
       {
         startDate: "2022-03-28 05:07",
@@ -87,60 +83,63 @@ const bars1 = ref([
           id: "624175ab908749b66d60a74e",
           label: "Batch P110",
           hasHandles: true,
-          style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
-        }
-      }
-    ]
+          style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" },
+        },
+      },
+    ],
   },
   {
     id: "61f0fe1384183f00fdd7ad78",
     device: {
       id: "61f0fe1384183f00fdd7ad78",
       name: "Integra P450",
-      serial: "ABCDE0123456"
+      serial: "ABCDE0123456",
     },
-    bars: [{
-      startDate: "2022-03-28 08:41",
-      endDate: "2022-03-28 13:37",
-      gapMs: 17760000,
-      device: "61f0fe1384183f00fdd7ad78",
-      items: ["6238acf61a71fff5ccdc8ac5"],
-      ganttBarConfig: {
-        id: "62417507908749b66d60a747",
-        label: "Batch P450",
-        hasHandles: true,
-        style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
-      }
-    }]
+    bars: [
+      {
+        startDate: "2022-03-28 08:41",
+        endDate: "2022-03-28 13:37",
+        gapMs: 17760000,
+        device: "61f0fe1384183f00fdd7ad78",
+        items: ["6238acf61a71fff5ccdc8ac5"],
+        ganttBarConfig: {
+          id: "62417507908749b66d60a747",
+          label: "Batch P450",
+          hasHandles: true,
+          style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" },
+        },
+      },
+    ],
   },
   {
     id: "61f0fe1384183f00fdd7ad48",
     device: {
       id: "61f0fe1384183f00fdd7ad48",
       name: "Integra P330",
-      serial: "ABCDE0123421"
+      serial: "ABCDE0123421",
     },
-    bars: [{
-      startDate: "2022-03-28 08:41",
-      endDate: "2022-03-28 13:37",
-      gapMs: 17760000,
-      device: "61f0fe1384183f00fdd7ad48",
-      items: [],
-      ganttBarConfig: {
-        id: "62417507908749b66d60a737",
-        label: "Batch P330",
-        hasHandles: true,
-        style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
-      }
-    }]
-  }
-]
-)
+    bars: [
+      {
+        startDate: "2022-03-28 08:41",
+        endDate: "2022-03-28 13:37",
+        gapMs: 17760000,
+        device: "61f0fe1384183f00fdd7ad48",
+        items: [],
+        ganttBarConfig: {
+          id: "62417507908749b66d60a737",
+          label: "Batch P330",
+          hasHandles: true,
+          style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" },
+        },
+      },
+    ],
+  },
+]);
 
 const addBar = () => {
   for (const row of bars1.value) {
-    if (row.bars.some(bar => bar.ganttBarConfig.id === "62417507908749b66d60b231")) {
-      return
+    if (row.bars.some((bar) => bar.ganttBarConfig.id === "62417507908749b66d60b231")) {
+      return;
     }
   }
   const bar = {
@@ -153,101 +152,106 @@ const addBar = () => {
       id: "62417507908749b66d60b231",
       label: "Batch P330 - 2",
       hasHandles: true,
-      style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" }
-    }
-  }
-  const newRow = bars1.value.find(row => row.id === "61f0fe1384183f00fdd7ad48")
+      style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" },
+    },
+  };
+  const newRow = bars1.value.find((row) => row.id === "61f0fe1384183f00fdd7ad48");
   if (newRow) {
-    newRow.bars.push(bar)
+    newRow.bars.push(bar);
   }
-}
+};
 
 const deleteBar = () => {
   for (const row of bars1.value) {
-    const idx = row.bars.findIndex(b => b.ganttBarConfig.id === "62417507908749b66d60b231")
+    const idx = row.bars.findIndex((b) => b.ganttBarConfig.id === "62417507908749b66d60b231");
     if (idx !== -1) {
-      row.bars.splice(idx, 1)
+      row.bars.splice(idx, 1);
     }
   }
-  const idx = bars1.value[1].bars.findIndex(b => b.ganttBarConfig.id === "62417507908749b66d60b231")
+  const idx = bars1.value[1].bars.findIndex((b) => b.ganttBarConfig.id === "62417507908749b66d60b231");
   if (idx !== -1) {
-    bars1.value[1].bars.splice(idx, 1)
+    bars1.value[1].bars.splice(idx, 1);
   }
-}
+};
 
-const onMousedownBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) => {
+const onMousedownBar = (bar: GanttBarObject, e: MouseEvent, datetime?: string) => {
   // console.log("mousedown-bar", bar, e, datetime)
-}
+};
 
-const onMouseupBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) => {
+const onMouseupBar = (bar: GanttBarObject, e: MouseEvent, datetime?: string) => {
   // console.log("mouseup-bar", bar, e, datetime)
-}
+};
 
-const onMouseenterBar = (bar: GanttBarObject, e:MouseEvent) => {
+const onMouseenterBar = (bar: GanttBarObject, e: MouseEvent) => {
   // console.log("mouseenter-bar", bar, e)
-}
+};
 
-const onMouseleaveBar = (bar: GanttBarObject, e:MouseEvent) => {
+const onMouseleaveBar = (bar: GanttBarObject, e: MouseEvent) => {
   // console.log("mouseleave-bar", bar, e)
-}
+};
 
-const onDragstartBar = (bar: GanttBarObject, e:MouseEvent) => {
+const onDragstartBar = (bar: GanttBarObject, e: MouseEvent) => {
   // console.log("dragstart-bar", bar, e)
-}
-const onDragBar = (bar: GanttBarObject, e:MouseEvent, newRowId: string) => {
-  let foundBar
+};
+const onDragBar = (bar: GanttBarObject, e: MouseEvent, newRowId: string) => {
+  let foundBar;
   if (newRowId !== "") {
-    const newRow = bars1.value.find(row => row.id === newRowId)
+    const newRow = bars1.value.find((row) => row.id === newRowId);
     for (const eachBar of bars1.value) {
-      foundBar = eachBar.bars.find(b => b.ganttBarConfig.id === bar.ganttBarConfig.id)
+      foundBar = eachBar.bars.find((b) => b.ganttBarConfig.id === bar.ganttBarConfig.id);
       if (foundBar) {
-        const index = eachBar.bars.indexOf(foundBar)
+        const index = eachBar.bars.indexOf(foundBar);
         if (newRow && foundBar) {
-          newRow.bars.push(foundBar)
+          newRow.bars.push(foundBar);
         }
         if (index !== -1) {
-          eachBar.bars.splice(index, 1)
+          eachBar.bars.splice(index, 1);
         }
       }
     }
   }
-}
+};
 
-const onDragendBar = (bar: GanttBarObject, e:MouseEvent, movedBars?: Map<GanttBarObject, {oldStart: string, oldEnd: string, oldRow: string}>) => {
+const onDragendBar = (
+  bar: GanttBarObject,
+  e: MouseEvent,
+  movedBars?: Map<GanttBarObject, { oldStart: string; oldEnd: string; oldRow: string }>
+) => {
   // console.log("dragend-bar", bar, e, movedBars)
-  const deleteBarRow = bars1.value.find(row => row.bars.find((b) => Object.entries(b).toString() === Object.entries(bar).toString()))
+  const deleteBarRow = bars1.value.find((row) =>
+    row.bars.find((b) => Object.entries(b).toString() === Object.entries(bar).toString())
+  );
   if (deleteBarRow && deleteBarRow.id !== bar.device) {
-    const foundBar = deleteBarRow.bars.find(b => b.ganttBarConfig.id === bar.ganttBarConfig.id)
+    const foundBar = deleteBarRow.bars.find((b) => b.ganttBarConfig.id === bar.ganttBarConfig.id);
     if (foundBar) {
-      const index = deleteBarRow.bars.indexOf(foundBar)
+      const index = deleteBarRow.bars.indexOf(foundBar);
       if (index !== -1) {
-        deleteBarRow.bars.splice(index, 1)
+        deleteBarRow.bars.splice(index, 1);
       }
     }
-    const addBarRow = bars1.value.find(row => row.id === bar.device)
+    const addBarRow = bars1.value.find((row) => row.id === bar.device);
     if (addBarRow && foundBar) {
-      addBarRow.bars.push(foundBar)
+      addBarRow.bars.push(foundBar);
     }
   }
-}
+};
 
-const onContextmenuBar = (bar: GanttBarObject, e:MouseEvent, datetime?: string) => {
+const onContextmenuBar = (bar: GanttBarObject, e: MouseEvent, datetime?: string) => {
   // console.log("contextmenu-bar", bar, e, datetime)
-}
+};
 
-const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
-  console.log(e, id, datetime)
-}
+const onDoubleClickRow = (e: MouseEvent, id: string, datetime: string) => {
+  console.log(e, id, datetime);
+};
 </script>
 <style>
-
 /* Grid row styles */
 .g-gantt-row {
   width: 100%;
   position: relative;
 }
 
-.g-gantt-row > .g-gantt-row-bars-container{
+.g-gantt-row > .g-gantt-row-bars-container {
   position: relative;
   border-top: 1px solid #eaeaea;
   width: 100%;
@@ -256,7 +260,7 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
 
 .g-gantt-row-label {
   position: absolute;
-  top:0;
+  top: 0;
   left: 0px;
   padding: 0px 8px;
   display: flex;
@@ -269,7 +273,7 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
   background: #f9fafd;
   color: #404040;
   z-index: 3;
-  box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.6);
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);
 }
 
 .bar-transition-leave-active,
@@ -284,39 +288,39 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
 }
 
 /* grid container styles */
-   .g-grid-container {
-     position: absolute;
-     top: 0;
-     left: 0%;
-     width: 100%;
-     height: 100%;
-     display: flex;
-     justify-content: space-between;
-   }
+.g-grid-container {
+  position: absolute;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 .g-grid-line {
   width: 1px;
   height: 100%;
   border-left: 1px solid #eeeeee;
 }
 .highlight {
-   background: #edf2f9;
- }
+  background: #edf2f9;
+}
 
 .g-timeaxis {
   position: sticky;
-  top:0;
+  top: 0;
   width: 100%;
   height: 100px;
   min-height: 75px;
   background: white;
   z-index: 4;
-  box-shadow: 0px 1px 3px 2px rgba(50,50,50, 0.5);
+  box-shadow: 0px 1px 3px 2px rgba(50, 50, 50, 0.5);
   display: flex;
   flex-direction: column;
 }
 
 .g-timeunits-container {
-  display:flex;
+  display: flex;
   width: 100%;
   height: 50%;
 }
@@ -349,15 +353,15 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
 }
 #g-timeaxis-marker {
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 3px;
   background: black;
 }
 
 /* Chart styles */
-#g-gantt-chart{
+#g-gantt-chart {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -369,10 +373,10 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
   -ms-user-select: none;
   user-select: none;
   border-radius: 5px;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
-#g-gantt-rows-container{
+#g-gantt-rows-container {
   position: relative;
 }
 
@@ -390,7 +394,7 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
   align-items: center;
 }
 .g-gantt-tooltip:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 10%;
@@ -409,18 +413,19 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
   margin-right: 4px;
 }
 .fade-enter-active {
-  animation: fade-in .3s;
+  animation: fade-in 0.3s;
 }
 .fade-leave-active {
-  animation: fade-in .3s reverse;
+  animation: fade-in 0.3s reverse;
 }
 
 @keyframes fade-in {
   from {
     opacity: 0;
-  } to {
-      opacity: 1;
-    }
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Bar styles */
@@ -440,7 +445,7 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 0 14px 0 14px;   /* 14px is the width of the handle */
+  padding: 0 14px 0 14px; /* 14px is the width of the handle */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -450,7 +455,8 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.g-gantt-bar-handle-left, .g-gantt-bar-handle-right {
+.g-gantt-bar-handle-left,
+.g-gantt-bar-handle-right {
   position: absolute;
   width: 10px;
   height: 100%;
@@ -470,5 +476,4 @@ const onDoubleClickRow = (e:MouseEvent, id: string, datetime: string) => {
 .g-gantt-bar-label img {
   pointer-events: none;
 }
-
 </style>

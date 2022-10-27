@@ -4,16 +4,12 @@
       <div
         v-for="({ label, value, width }, index) in timeaxisUnits.upperUnits"
         :key="label"
-        :class="(index % 2 === 0 ? 'primary-color' : 'secondary-color') +' g-upper-timeunit'"
+        :class="(index % 2 === 0 ? 'primary-color' : 'secondary-color') + ' g-upper-timeunit'"
         :style="{
-          width
+          width,
         }"
       >
-        <slot
-          name="upper-timeunit"
-          :label="label"
-          :value="value"
-        >
+        <slot name="upper-timeunit" :label="label" :value="value">
           {{ label }}
         </slot>
       </div>
@@ -23,46 +19,38 @@
       <div
         v-for="({ label, value, width }, index) in timeaxisUnits.lowerUnits"
         :key="label"
-        :class="(index % 2 === 0 ? 'primary-color' : 'secondary-color') +' g-timeunit'"
+        :class="(index % 2 === 0 ? 'primary-color' : 'secondary-color') + ' g-timeunit'"
         :style="{
           flexDirection: precision === 'hour' ? 'column' : 'row',
           alignItems: precision === 'hour' ? '' : 'center',
-          width
+          width,
         }"
       >
-        <slot
-          name="timeunit"
-          :label="label"
-          :value="value"
-        >
+        <slot name="timeunit" :label="label" :value="value">
           {{ label }}
         </slot>
-        <div
-          v-if="precision === 'hour'"
-          class="g-timeaxis-hour-pin"
-        />
+        <div v-if="precision === 'hour'" class="g-timeaxis-hour-pin" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import useTimeaxisUnits from "../composables/useTimeaxisUnits"
-import { defineProps, inject } from "vue"
-import INJECTION_KEYS from "../models/symbols"
+import useTimeaxisUnits from "../composables/useTimeaxisUnits";
+import { defineProps, inject } from "vue";
+import INJECTION_KEYS from "../models/symbols";
 
 defineProps<{
-  chartStart: string
-  chartEnd: string
-  precision: "hour" | "day" | "month"
-}>()
-const gGanttChartPropsRefs = inject(INJECTION_KEYS.gGanttChartPropsKey)
+  chartStart: string;
+  chartEnd: string;
+  precision: "hour" | "day" | "month";
+}>();
+const gGanttChartPropsRefs = inject(INJECTION_KEYS.gGanttChartPropsKey);
 if (!gGanttChartPropsRefs) {
-  throw new Error("GGanttBar: Provide/Inject of values from GGanttChart failed!")
+  throw new Error("GGanttBar: Provide/Inject of values from GGanttChart failed!");
 }
-const { precision } = gGanttChartPropsRefs
-const { timeaxisUnits } = useTimeaxisUnits(gGanttChartPropsRefs)
+const { precision } = gGanttChartPropsRefs;
+const { timeaxisUnits } = useTimeaxisUnits(gGanttChartPropsRefs);
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

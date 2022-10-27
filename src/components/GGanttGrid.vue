@@ -1,7 +1,7 @@
 <template>
   <div class="g-grid-container">
     <div
-      v-for="{label, value, width} in timeaxisUnits.lowerUnits"
+      v-for="{ label, value, width } in timeaxisUnits.lowerUnits"
       :key="label"
       :class="(highlightedUnits.includes(Number(value)) ? 'highlight' : '') + ' g-grid-line'"
       :style="{
@@ -12,18 +12,18 @@
 </template>
 
 <script setup lang="ts">
-import useTimeaxisUnits from "../composables/useTimeaxisUnits"
-import { defineProps, inject, toRefs } from "vue"
-import INJECTION_KEYS from "../models/symbols"
+import useTimeaxisUnits from "../composables/useTimeaxisUnits";
+import { defineProps, inject, toRefs } from "vue";
+import INJECTION_KEYS from "../models/symbols";
 
 const props = defineProps<{
-  highlightedUnits?: number[]
-}>()
+  highlightedUnits?: number[];
+}>();
 
-const { highlightedUnits } = toRefs(props)
-const gGanttChartPropsRefs = inject(INJECTION_KEYS.gGanttChartPropsKey)
+const { highlightedUnits } = toRefs(props);
+const gGanttChartPropsRefs = inject(INJECTION_KEYS.gGanttChartPropsKey);
 if (!gGanttChartPropsRefs) {
-  throw new Error("GGanttBar: Provide/Inject of values from GGanttChart failed!")
+  throw new Error("GGanttBar: Provide/Inject of values from GGanttChart failed!");
 }
-const { timeaxisUnits } = useTimeaxisUnits(gGanttChartPropsRefs)
+const { timeaxisUnits } = useTimeaxisUnits(gGanttChartPropsRefs);
 </script>
