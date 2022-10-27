@@ -1,5 +1,5 @@
 <template>
-  <g-gantt-chart
+  <gantt-chart
     :chart-start="chartStart"
     :chart-end="chartEnd"
     precision="hour"
@@ -22,7 +22,7 @@
     @dragend-bar="onDragendBar($event.bar, $event.e, $event.movedBars)"
     @contextmenu-bar="onContextmenuBar($event.bar, $event.e, $event.datetime)"
   >
-    <g-gantt-row
+    <gantt-row
       v-for="rowBar in bars1"
       :id="rowBar.id ? rowBar.id : ''"
       :key="rowBar.id"
@@ -33,8 +33,8 @@
       <template #bar-label="{ bar }">
         {{ bar.ganttBarConfig.label }}
       </template>
-    </g-gantt-row>
-  </g-gantt-chart>
+    </gantt-row>
+  </gantt-chart>
 
   <button @click="addBar()">Add bar</button>
   <button @click="deleteBar()">Delete bar</button>
@@ -42,8 +42,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import GGanttRow from "./components/GGanttRow.vue";
-import GGanttChart from "./components/GGanttChart.vue";
+import GanttRow from "./components/GanttRow.vue";
+import GanttChart from "./components/GanttChart.vue";
 import { GanttBarObject } from "./models/models";
 
 const chartStart = ref("2022-03-28 00:00");
@@ -244,236 +244,7 @@ const onDoubleClickRow = (e: MouseEvent, id: string, datetime: string) => {
   console.log(e, id, datetime);
 };
 </script>
-<style>
-/* Grid row styles */
-.g-gantt-row {
-  width: 100%;
-  position: relative;
-}
 
-.g-gantt-row > .g-gantt-row-bars-container {
-  position: relative;
-  border-top: 1px solid #eaeaea;
-  width: 100%;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.g-gantt-row-label {
-  position: absolute;
-  top: 0;
-  left: 0px;
-  padding: 0px 8px;
-  display: flex;
-  align-items: center;
-  height: 60%;
-  min-height: 20px;
-  font-size: 0.8em;
-  font-weight: bold;
-  border-bottom-right-radius: 6px;
-  background: #f9fafd;
-  color: #404040;
-  z-index: 3;
-  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);
-}
-
-.bar-transition-leave-active,
-.bar-transition-enter-active {
-  transition: 0s;
-}
-.bar-transition-enter-from {
-  transform: scale(0);
-}
-.bar-transition-leave-to {
-  transform: scale(0);
-}
-
-/* grid container styles */
-.g-grid-container {
-  position: absolute;
-  top: 0;
-  left: 0%;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-.g-grid-line {
-  width: 1px;
-  height: 100%;
-  border-left: 1px solid #eeeeee;
-}
-.highlight {
-  background: #edf2f9;
-}
-
-.g-timeaxis {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 100px;
-  min-height: 75px;
-  background: white;
-  z-index: 4;
-  box-shadow: 0px 1px 3px 2px rgba(50, 50, 50, 0.5);
-  display: flex;
-  flex-direction: column;
-}
-
-.g-timeunits-container {
-  display: flex;
-  width: 100%;
-  height: 50%;
-}
-.g-timeunits-container .primary-color {
-  background-color: #f9fafd;
-}
-.g-timeunits-container .secondary-color {
-  background-color: #edf2f9;
-}
-
-.g-timeunit {
-  height: 100%;
-  font-size: 65%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.g-upper-timeunit {
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-}
-
-.g-timeaxis-hour-pin {
-  width: 1px;
-  height: 10px;
-  background: #333;
-}
-#g-timeaxis-marker {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 3px;
-  background: black;
-}
-
-/* Chart styles */
-#g-gantt-chart {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  border-radius: 5px;
-  background: #ffffff;
-}
-
-#g-gantt-rows-container {
-  position: relative;
-}
-
-/* Tooltip styles */
-.g-gantt-tooltip {
-  position: fixed;
-  background: black;
-  color: white;
-  z-index: 4;
-  font-size: 0.85em;
-  padding: 5px;
-  border-radius: 3px;
-  transition: opacity 0.2s;
-  display: flex;
-  align-items: center;
-}
-.g-gantt-tooltip:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 10%;
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
-  border-bottom-color: black;
-  border-top: 0;
-  margin-left: -5px;
-  margin-top: -5px;
-}
-.g-gantt-tooltip > .gantt-bar-tooltip-color-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 100%;
-  margin-right: 4px;
-}
-.fade-enter-active {
-  animation: fade-in 0.3s;
-}
-.fade-leave-active {
-  animation: fade-in 0.3s reverse;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Bar styles */
-.g-gantt-bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: cadetblue;
-  overflow: hidden;
-}
-
-.g-gantt-bar.immobile {
-  opacity: 0.5;
-}
-
-.g-gantt-bar-label {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 0 14px 0 14px; /* 14px is the width of the handle */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.g-gantt-bar-label > * {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.g-gantt-bar-handle-left,
-.g-gantt-bar-handle-right {
-  position: absolute;
-  width: 10px;
-  height: 100%;
-  background: white;
-  opacity: 0.7;
-  border-radius: 0px;
-  cursor: w-resize;
-  top: 0;
-}
-.g-gantt-bar-handle-left {
-  left: 0;
-}
-.g-gantt-bar-handle-right {
-  right: 0;
-}
-
-.g-gantt-bar-label img {
-  pointer-events: none;
-}
+<style lang="scss">
+@import "public/style";
 </style>

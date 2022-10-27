@@ -32,13 +32,13 @@ dayjs.extend(customParseFormat);
 
 import { Plugin } from "vue";
 
-import GGanttChart from "./components/GGanttChart.vue";
-import GGanttRow from "./components/GGanttRow.vue";
+import GanttChart from "./components/GanttChart.vue";
+import GanttRow from "./components/GanttRow.vue";
 
 const planner: Plugin = {
   install(app) {
-    app.component("GGanttChart", GGanttChart);
-    app.component("GGanttRow", GGanttRow);
+    app.component("GanttChart", GanttChart);
+    app.component("GanttRow", GanttRow);
   },
 };
 

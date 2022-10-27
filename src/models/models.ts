@@ -1,35 +1,54 @@
+/*
+ * MARKLIX PLANNER
+ * Copyright (c) 2022, Marklix SAS.
+ *
+ * Tous droits réservés pour tous pays. L’ensemble du contenu de ce fichier est confidentiel et demeure la propriété
+ * exclusive de son auteur. Tous les droits sont réservés pour tous pays, notamment les droits de consultation, de
+ * reproduction, de représentation, d’adaptation, de modification, de traduction, de distribution, de
+ * commercialisation, d’usage, d’exploitation et de cession dudit fichier. Les traductions éventuelles de cette notice
+ * sont uniquement données à titre indicatif.
+ *
+ * All rights reserved for all countries. All information contained herein is confidential and remain the exclusive
+ * property of its author. All rights are reserved for all countries, including the rights to read, copy, depict,
+ * adapt, modify, translate, distribute, sell, use (including commercially) and concede this file. Only the French
+ * version of this notice is legally binding (see above).
+ */
+
 import { Ref } from "vue";
 
 export type GanttBarObject = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
+
   ganttBarConfig: {
     id: string;
     label?: string;
-    hasHandles?: boolean;
-    immobile?: boolean;
+
     bundle?: string;
-    pushOnOverlap?: boolean;
     dragLimitLeft?: number;
     dragLimitRight?: number;
+    hasHandles?: boolean;
+    immobile?: boolean;
+    pushOnOverlap?: boolean;
+
     style?: CSSStyleSheet;
   };
 };
 
-export type GGanttChartPropsRefs = {
-  chartStart: Ref<string>;
-  chartEnd: Ref<string>;
-  precision: Ref<"hour" | "day" | "month">;
-  barStart: Ref<string>;
+export type GanttChartPropsRefs = {
   barEnd: Ref<string>;
-  rowHeight: Ref<number>;
+  barStart: Ref<string>;
+  chartEnd: Ref<string>;
+  chartStart: Ref<string>;
   dateFormat: Ref<string>;
-  width: Ref<string>;
-  hideTimeaxis: Ref<boolean>;
-  grid: Ref<boolean>;
-  pushOnOverlap: Ref<boolean>;
-  noOverlap: Ref<boolean>;
-  gGanttChart: Ref<HTMLElement | null>;
   font: Ref<string>;
+  ganttChart: Ref<HTMLElement | null>;
+  grid: Ref<boolean>;
+  hideTimeAxis: Ref<boolean>;
   minimumGap: Ref<number>;
+  noOverlap: Ref<boolean>;
+  precision: Ref<"hour" | "day" | "month">;
+  pushOnOverlap: Ref<boolean>;
+  rowHeight: Ref<number>;
+  width: Ref<string>;
 };
