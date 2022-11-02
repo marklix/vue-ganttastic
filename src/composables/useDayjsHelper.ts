@@ -26,8 +26,8 @@ import { GanttBarObject, GanttChartPropsRefs } from "@/models/models";
  * @return chartStartDayjs The start date of the chart as a Dayjs instance.
  * @return chartEndDayjs The end date of the chart as a Dayjs instance.
  * @return toDayjs A function that fetches the start or end time of the passed string or GanttBarObject instance.
- * @return addGapDayjs A function that adds a specific duration to the passed start time and returns the result as a Dayjs
- *   instance.
+ * @return addGapDayjs A function that adds a specific duration to the passed start time and returns the result as a
+ *   Dayjs instance.
  * @return differenceDayjs A function that computes the difference between a start time and an end time and returns the
  *   result as a Dayjs instance.
  */
