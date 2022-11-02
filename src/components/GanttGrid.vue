@@ -19,31 +19,35 @@
     <div
       v-for="{ label, value, width } in timeAxisUnits.lowerUnits"
       :key="label"
-      class="gantt-grid-line"
       :class="highlightedUnits.includes(Number(value)) ? 'highlight' : ''"
       :style="{ width }"
+      class="gantt-grid-line"
     />
   </div>
 </template>
 
-<script setup lang="ts">
-import { defineProps, inject, toRefs } from "vue";
+<script lang="ts">
+import { defineComponent, inject } from "vue";
 
 import useTimeAxisUnits from "../composables/useTimeAxisUnits";
 
 import INJECTION_KEYS from "../models/symbols";
 
-const props = defineProps<{
-  highlightedUnits?: number[];
-}>();
+export default defineComponent({
+  name: "GanttGrid",
+  props: {
+    highlightedUnits: { type: Object as () => number[], default: () => [] as number[] },
+  },
+  setup() {
+    const ganttChartPropsRefs = inject(INJECTION_KEYS.ganttChartPropsKey);
 
-const { highlightedUnits } = toRefs(props);
+    if (!ganttChartPropsRefs) {
+      throw new Error("GanttBar: Provide/Inject of values from GanttChart failed!");
+    }
 
-const ganttChartPropsRefs = inject(INJECTION_KEYS.ganttChartPropsKey);
+    const { timeAxisUnits } = useTimeAxisUnits(ganttChartPropsRefs);
 
-if (!ganttChartPropsRefs) {
-  throw new Error("GanttBar: Provide/Inject of values from GanttChart failed!");
-}
-
-const { timeAxisUnits } = useTimeAxisUnits(ganttChartPropsRefs);
+    return { timeAxisUnits };
+  },
+});
 </script>
