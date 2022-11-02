@@ -41,7 +41,6 @@ export type GanttChartPropsRefs = {
   chartEnd: Ref<string>;
   chartStart: Ref<string>;
   dateFormat: Ref<string>;
-  font: Ref<string>;
   ganttChart: Ref<HTMLElement | null>;
   grid: Ref<boolean>;
   hideTimeAxis: Ref<boolean>;
