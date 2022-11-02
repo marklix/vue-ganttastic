@@ -41,13 +41,13 @@
 <script lang="ts">
 import { defineComponent, inject, ref, Ref, toRefs, computed } from "vue";
 
-import useTimePositionMapping from "../composables/useTimePositionMapping";
+import useTimePositionMapping from "@/composables/useTimePositionMapping";
 
-import INJECTION_KEYS from "../models/symbols";
+import INJECTION_KEYS from "@/models/symbols";
 
 import { GanttBarObject } from "@/models/models";
 
-import GanttBar from "./GanttBar.vue";
+import GanttBar from "@/components/GanttBar.vue";
 
 export default defineComponent({
   name: "GanttRow",

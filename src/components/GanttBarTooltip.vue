@@ -35,9 +35,9 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch, nextTick, inject } from "vue";
 
-import useDayjsHelper from "../composables/useDayjsHelper";
+import useDayjsHelper from "@/composables/useDayjsHelper";
 
-import INJECTION_KEYS from "../models/symbols";
+import INJECTION_KEYS from "@/models/symbols";
 
 import { GanttBarObject } from "@/models/models";
 

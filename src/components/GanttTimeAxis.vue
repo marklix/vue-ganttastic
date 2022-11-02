@@ -51,9 +51,9 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 
-import useTimeAxisUnits from "../composables/useTimeAxisUnits";
+import useTimeAxisUnits from "@/composables/useTimeAxisUnits";
 
-import INJECTION_KEYS from "../models/symbols";
+import INJECTION_KEYS from "@/models/symbols";
 
 export default defineComponent({
   name: "GanttTimeAxis",
