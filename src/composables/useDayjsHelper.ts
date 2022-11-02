@@ -41,7 +41,7 @@ export default function useBarDrag(ganttChartPropsRefs: GanttChartPropsRefs) {
    *   must be picked.
    * @return The (start or end) time, as a Dayjs instance.
    */
-  const toDayjs = (value: string | GanttBarObject, startOrEnd?: "start" | "end") => {
+  const toDayjs = (value: string | GanttBarObject, startOrEnd?: "start" | "end"): dayjs.Dayjs => {
     if (typeof value === "string") {
       return dayjs(value, dateFormat.value, true);
     }
