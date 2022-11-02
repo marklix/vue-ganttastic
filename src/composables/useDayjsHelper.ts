@@ -47,9 +47,7 @@ export default function useBarDrag(ganttChartPropsRefs: GanttChartPropsRefs) {
     }
 
     if (startOrEnd == null) {
-      throw Error(
-        "VueGanttastic - toDayjs: passed a GanttBarObject as value, but did not provide start|end parameter."
-      );
+      throw Error("Planner - toDayjs: passed a GanttBarObject as value, but did not provide start|end parameter.");
     }
 
     const property = startOrEnd === "start" ? value[barStart.value] : value[barEnd.value];
