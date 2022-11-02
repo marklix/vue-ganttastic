@@ -20,6 +20,8 @@ import useDayjsHelper from "./useDayjsHelper";
 
 import { GanttChartPropsRefs } from "@/models/models";
 
+// TODO: check that "minutes" is the right unit for time/space conversion.
+
 /**
  Return functions related to position/time conversion.
  @param {GanttChartPropsRefs} ganttChartPropsRefs The properties of the GANTT chart.
