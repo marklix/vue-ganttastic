@@ -22,6 +22,11 @@ import { GanttChartPropsRefs } from "@/models/models";
 
 import { ManipulateType } from "dayjs";
 
+/**
+ * Return a function that setups the units for the time axis.
+ * @param {GanttChartPropsRefs} ganttChartPropsRefs The properties of the GANTT chart.
+ * @return timeAxisUnits A function that setups the units for the time axis.
+ */
 export default function useTimeAxisUnits(ganttChartPropsRefs: GanttChartPropsRefs) {
   const { precision } = ganttChartPropsRefs;
   const { chartStartDayjs, chartEndDayjs } = useDayjsHelper(ganttChartPropsRefs);

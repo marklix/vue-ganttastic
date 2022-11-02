@@ -18,6 +18,12 @@ import { ComputedRef } from "vue";
 
 import { GanttBarObject, GanttChartPropsRefs } from "@/models/models";
 
+/**
+ * Returns a function to handle dragging limits of a bar.
+ * @param {ComputedRef<GanttBarObject[][]>} allRowsInChart List of the bars in all rows of the Gantt chart.
+ * @param {GanttChartPropsRefs} ganttChartPropsRefs The properties of the GANTT chart.
+ * @return setDragLimitsOfGanttBar A function that computes the limits for dragging a bar.
+ */
 export default function useBarDragLimit(
   allRowsInChart: ComputedRef<GanttBarObject[][]>,
   ganttChartPropsRefs: GanttChartPropsRefs

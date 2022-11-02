@@ -23,10 +23,10 @@ import { GanttChartPropsRefs } from "@/models/models";
 // TODO: check that "minutes" is the right unit for time/space conversion.
 
 /**
- Return functions related to position/time conversion.
- @param {GanttChartPropsRefs} ganttChartPropsRefs The properties of the GANTT chart.
- @return mapTimeToPosition A function that converts a time to a position in the Gantt chart.
- @return mapPositionToTime A function that converts a position in the Gantt chart to a time.
+ * Return functions related to position/time conversion.
+ * @param {GanttChartPropsRefs} ganttChartPropsRefs The properties of the GANTT chart.
+ * @return mapTimeToPosition A function that converts a time to a position in the Gantt chart.
+ * @return mapPositionToTime A function that converts a position in the Gantt chart to a time.
  */
 export default function useTimePositionMapping(ganttChartPropsRefs: GanttChartPropsRefs) {
   const { chartStart, width, dateFormat, ganttChart } = ganttChartPropsRefs;

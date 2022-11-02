@@ -21,15 +21,15 @@ import dayjs, { ManipulateType } from "dayjs";
 import { GanttBarObject, GanttChartPropsRefs } from "@/models/models";
 
 /**
- Return time properties and functions related to a particular GANTT chart.
- @param {GanttChartPropsRefs} ganttChartPropsRefs The properties of the GANTT chart.
- @return chartStartDayjs The start date of the chart as a Dayjs instance.
- @return chartEndDayjs The end date of the chart as a Dayjs instance.
- @return toDayjs A function that fetches the start or end time of the passed string or GanttBarObject instance.
- @return addGapDayjs A function that adds a specific duration to the passed start time and returns the result as a Dayjs
-   instance.
- @return differenceDayjs A function that computes the difference between a start time and an end time and returns the
-   result as a Dayjs instance.
+ * Return time properties and functions related to a particular GANTT chart.
+ * @param {GanttChartPropsRefs} ganttChartPropsRefs The properties of the GANTT chart.
+ * @return chartStartDayjs The start date of the chart as a Dayjs instance.
+ * @return chartEndDayjs The end date of the chart as a Dayjs instance.
+ * @return toDayjs A function that fetches the start or end time of the passed string or GanttBarObject instance.
+ * @return addGapDayjs A function that adds a specific duration to the passed start time and returns the result as a Dayjs
+ *   instance.
+ * @return differenceDayjs A function that computes the difference between a start time and an end time and returns the
+ *   result as a Dayjs instance.
  */
 export default function useBarDrag(ganttChartPropsRefs: GanttChartPropsRefs) {
   const { chartStart, chartEnd, barStart, barEnd, dateFormat } = ganttChartPropsRefs;
