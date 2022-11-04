@@ -54,7 +54,7 @@ import GanttBarTooltip from "@/components/GanttBarTooltip.vue";
 import { GanttBarObject } from "@/models/models";
 
 export default defineComponent({
-  name: "GanttRow",
+  name: "GanttChart",
   emits: [
     "contextmenu-bar",
     "dblclick-bar",
@@ -125,7 +125,7 @@ export default defineComponent({
     const showTooltip = ref(false);
     const isDragging = ref(false);
     const tooltipBar = ref<GanttBarObject | null>(null);
-    let tooltipTimeoutId: number;
+    let tooltipTimeoutId: ReturnType<typeof setTimeout>;
     const initTooltip = (bar: GanttBarObject) => {
       if (tooltipTimeoutId) {
         clearTimeout(tooltipTimeoutId);
@@ -192,7 +192,7 @@ export default defineComponent({
     provide(INJECTION_KEYS.ganttChartPropsKey, { ...toRefs(props), ganttChart });
     provide(INJECTION_KEYS.emitBarEventKey, emitBarEvent);
 
-    return { isDragging, showTooltip, tooltipBar };
+    return { isDragging, showTooltip, tooltipBar, ganttChart };
   },
 });
 </script>
