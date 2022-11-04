@@ -74,11 +74,9 @@ export default defineComponent({
 
     const prepareForDrag = () => {
       // setDragLimitsOfGanttBar(bar.value)
-      if (!props.bar.value.ganttBarConfig.immobile) {
+      if (!props.bar.ganttBarConfig.immobile) {
         const firstMousemoveCallback = (e: MouseEvent) => {
-          props.bar.value.ganttBarConfig.bundle != null
-            ? initDragOfBundle(props.bar.value, e)
-            : initDragOfBar(props.bar.value, e);
+          props.bar.ganttBarConfig.bundle != null ? initDragOfBundle(props.bar, e) : initDragOfBar(props.bar, e);
           isDragging.value = true;
         };
 
@@ -101,7 +99,7 @@ export default defineComponent({
         prepareForDrag();
       }
 
-      const barElement = document.getElementById(props.bar.value.ganttBarConfig.id);
+      const barElement = document.getElementById(props.bar.ganttBarConfig.id);
       const barContainer = barElement?.closest(".gantt-row-bars-container")?.getBoundingClientRect();
       let datetime;
 
@@ -109,7 +107,7 @@ export default defineComponent({
         datetime = mapPositionToTime(e.clientX - barContainer.left);
       }
 
-      emitBarEvent(e, props.bar.value, datetime);
+      emitBarEvent(e, props.bar, datetime);
     };
 
     const { barStart, barEnd, width, chartStart, chartEnd } = ganttChartPropsRefs;
@@ -121,21 +119,21 @@ export default defineComponent({
       [props.bar, width, chartStart, chartEnd],
       () => {
         nextTick(() => {
-          xStart.value = mapTimeToPosition(props.bar.value[barStart.value]);
-          xEnd.value = mapTimeToPosition(props.bar.value[barEnd.value]);
+          xStart.value = mapTimeToPosition(props.bar[barStart.value]);
+          xEnd.value = mapTimeToPosition(props.bar[barEnd.value]);
         });
       },
       { deep: true, immediate: true }
     );
 
     window.addEventListener("resize", () => {
-      xStart.value = mapTimeToPosition(props.bar.value[barStart.value]);
-      xEnd.value = mapTimeToPosition(props.bar.value[barEnd.value]);
+      xStart.value = mapTimeToPosition(props.bar[barStart.value]);
+      xEnd.value = mapTimeToPosition(props.bar[barEnd.value]);
     });
 
     const barStyle = computed(() => {
       return {
-        ...props.bar.value.ganttBarConfig.style,
+        ...props.bar.ganttBarConfig.style,
         position: "absolute",
         top: `${rowHeight.value * 0.05}px`,
         left: `${xStart.value}px`,
