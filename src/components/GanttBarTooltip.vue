@@ -61,7 +61,7 @@ export default defineComponent({
     watch(
       () => props.bar,
       () => {
-        const barId = props.bar?.value?.ganttBarConfig.id || "";
+        const barId = props.bar?.ganttBarConfig.id || "";
         const barElement = document.getElementById(barId);
         nextTick(() => {
           if (barId) {
@@ -112,9 +112,9 @@ export default defineComponent({
     const tooltipContent = computed(() => {
       const format = tooltipFormats[precision.value];
 
-      if (props.bar?.value) {
-        const barStartFormatted = toDayjs(props.bar.value, "start").format(format);
-        const barEndFormatted = toDayjs(props.bar.value, "end").format(format);
+      if (props.bar) {
+        const barStartFormatted = toDayjs(props.bar, "start").format(format);
+        const barEndFormatted = toDayjs(props.bar, "end").format(format);
 
         return `${barStartFormatted} - ${barEndFormatted}`;
       }
