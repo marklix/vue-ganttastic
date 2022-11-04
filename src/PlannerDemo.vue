@@ -112,7 +112,6 @@ export default defineComponent({
             device: "61f0fe1384183f00fdd7ad78",
             items: ["6238acf61a71fff5ccdc8ac5"],
             ganttBarConfig: {
-              bundle: "test-bundle",
               id: "62417507908749b66d60a747",
               label: "Batch P450",
               hasHandles: true,
@@ -136,7 +135,6 @@ export default defineComponent({
             device: "61f0fe1384183f00fdd7ad48",
             items: [],
             ganttBarConfig: {
-              bundle: "test-bundle",
               id: "62417507908749b66d60a737",
               label: "Batch P330",
               hasHandles: true,
