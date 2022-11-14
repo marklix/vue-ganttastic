@@ -44,6 +44,7 @@ import { GanttBarObject } from "@/models/models";
 export default defineComponent({
   name: "GanttBarTooltip",
   props: {
+    parentId: { type: String, required: true },
     bar: { type: Object as () => GanttBarObject, required: false },
     modelValue: { type: Boolean },
   },
@@ -68,7 +69,7 @@ export default defineComponent({
             let top = 0;
             let left = 0;
 
-            if (barElement !== null) {
+            if (barElement) {
               top = barElement.getBoundingClientRect().top;
               left = barElement.getBoundingClientRect().left;
             }
@@ -76,14 +77,12 @@ export default defineComponent({
             const { rowHeight } = ganttChartPropsRefs;
 
             // Get relative position to window for hide tooltip if is out of container
-            const chartContainerOffset = document.getElementById("gantt-chart")?.getBoundingClientRect().left || 0;
-            const chartContainerWidth = document.getElementById("gantt-chart")?.getBoundingClientRect().width || 0;
+            const chartContainerOffset = document.getElementById(props.parentId)?.getBoundingClientRect().left || 0;
+            const chartContainerWidth = document.getElementById(props.parentId)?.getBoundingClientRect().width || 0;
 
             // There is a bug that randomly changes the place of tooltip when changing row, this is a workaround for it
-            if (barElement?.offsetLeft && left > barElement?.offsetLeft) {
+            if (barElement?.offsetLeft) {
               left = barElement?.offsetLeft + 10 + chartContainerOffset;
-            } else {
-              left = Math.max(left, 10);
             }
 
             // Hide/show tooltip if true/false out of limits
