@@ -20,30 +20,39 @@
       {{ label }}
     </slot>
   </div-->
-
-  <div id="gantt-chart" ref="ganttChart" :style="{ width }">
-    <GanttTimeAxis v-if="!hideTimeAxis" :chart-start="chartStart" :chart-end="chartEnd" :precision="precision">
-      <template #upper-timeunit="{ label, value }">
-        <slot name="upper-timeunit" :label="label" :value="value" />
-      </template>
-      <template #timeunit="{ label, value }">
-        <slot name="timeunit" :label="label" :value="value" />
-      </template>
-    </GanttTimeAxis>
-    <GanttGrid v-if="grid" :highlighted-units="highlightedUnits" />
-    <div id="gantt-rows-container">
-      <slot />
+  <div style="width: 100%; display: flex">
+    <div :style="{ width: 100 - width + '%', overflow: 'hidden' }">
+      <div class="gantt-rows-label">
+        {{ labelRows }}
+      </div>
+      <div class="gantt-row-label" v-for="rowBar in rowBarData" :key="rowBar.id" :style="{ height: rowHeight + 'px' }">
+        {{ rowBar.device.name }}
+      </div>
     </div>
-    <GanttBarTooltip :model-value="showTooltip || isDragging" :bar="tooltipBar">
-      <template #default>
-        <slot name="bar-tooltip" :bar="tooltipBar" />
-      </template>
-    </GanttBarTooltip>
+    <div class="gantt-chart" :id="id" ref="ganttChart" :style="{ width: width + '%' }">
+      <GanttTimeAxis v-if="!hideTimeAxis" :chart-start="chartStart" :chart-end="chartEnd" :precision="precision">
+        <template #upper-timeunit="{ label, value }">
+          <slot name="upper-timeunit" :label="label" :value="value" />
+        </template>
+        <template #timeunit="{ label, value }">
+          <slot name="timeunit" :label="label" :value="value" />
+        </template>
+      </GanttTimeAxis>
+      <GanttGrid v-if="grid" :highlighted-units="highlightedUnits" />
+      <div id="gantt-rows-container">
+        <slot />
+      </div>
+      <GanttBarTooltip :model-value="showTooltip || isDragging" :bar="tooltipBar" :parent-id="id">
+        <template #default>
+          <slot name="bar-tooltip" :bar="tooltipBar" />
+        </template>
+      </GanttBarTooltip>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, provide, ref, toRefs, useSlots, VNode } from "vue";
+import { computed, defineComponent, inject, provide, ref, onMounted, toRefs, useSlots, VNode } from "vue";
 
 import INJECTION_KEYS from "../models/symbols";
 
@@ -51,7 +60,9 @@ import GanttTimeAxis from "@/components/GanttTimeAxis.vue";
 import GanttGrid from "@/components/GanttGrid.vue";
 import GanttBarTooltip from "@/components/GanttBarTooltip.vue";
 
-import { GanttBarObject } from "@/models/models";
+import { Emitter } from "~/mitt";
+
+import { GanttBarObject, GanttRowObject } from "@/models/models";
 
 export default defineComponent({
   name: "GanttChart",
@@ -67,6 +78,8 @@ export default defineComponent({
     "mouseup-bar",
   ],
   props: {
+    id: { type: String, required: true },
+    labelRows: { type: String, required: false },
     barEnd: { type: String, required: true },
     barStart: { type: String, required: true },
     chartEnd: { type: String, required: true },
@@ -75,6 +88,7 @@ export default defineComponent({
     grid: { type: Boolean, default: false },
     hideTimeAxis: { type: Boolean, default: false },
     highlightedUnits: { type: Array as () => number[], default: () => [] },
+    rowBarData: { type: Array as () => GanttRowObject[], default: () => [] },
     minimumGap: { type: Number, default: 60 },
     noOverlap: { type: Boolean, default: false },
     precision: { type: String as () => "hour" | "day" | "month", default: "day" },
@@ -88,6 +102,7 @@ export default defineComponent({
     GanttBarTooltip,
   },
   setup(props, { emit }) {
+    const eventBus = inject("eventBus") as Emitter<GanttBarObject>;
     const slots = useSlots();
 
     const allBarsInChartByRow = computed(() => {
@@ -174,17 +189,140 @@ export default defineComponent({
           emit("dragstart-bar", { bar, e });
           break;
         case "drag":
-          emit("drag-bar", { bar, e, newRowId });
+          emit("drag-bar", updateOnBarChangeRow(bar, props.rowBarData, newRowId));
           break;
         case "dragend":
           isDragging.value = false;
-          emit("dragend-bar", { bar, e, movedBars });
+          if (movedBars) {
+            emit("dragend-bar", updateOnDragEnd(movedBars, props.rowBarData));
+          }
           break;
         case "contextmenu":
           emit("contextmenu-bar", { bar, e, datetime });
           break;
       }
     };
+
+    /**
+     * Update the rowBarData object if there is moved bars
+     * @param {Map<GanttBarObject, { oldStart: string; oldEnd: string }>} movedBars The bars that have been moved
+     * @param {GanttRowObject[]} rowBarData The main data object
+     * @return the object updated
+     */
+    const updateOnDragEnd = (
+      movedBars: Map<GanttBarObject, { oldStart: string; oldEnd: string }>,
+      rowBarData: GanttRowObject[]
+    ): GanttRowObject[] => {
+      const rowObjectToUpdate = [...rowBarData];
+      movedBars.forEach((oldPosition, movedBar) => {
+        const deleteBarRow = rowObjectToUpdate.find((row) =>
+          row.bars.find((b) => Object.entries(b).toString() === Object.entries(movedBar).toString())
+        );
+
+        if (deleteBarRow && deleteBarRow.id !== movedBar.movedBar) {
+          const foundBar = deleteBarRow.bars.find((b) => b.ganttBarConfig.id === movedBar.ganttBarConfig.id);
+
+          if (foundBar) {
+            const index = deleteBarRow.bars.indexOf(foundBar);
+            if (index !== -1) {
+              deleteBarRow.bars.splice(index, 1);
+            }
+          }
+          const addBarRow = rowObjectToUpdate.find((row) => row.id === movedBar.device);
+          if (addBarRow && foundBar) {
+            addBarRow.bars.push(foundBar);
+          }
+        }
+      });
+
+      return rowObjectToUpdate;
+    };
+
+    /**
+     * Update the rowBarData object if there is a bar changing row
+     * @param {GanttBarObject} bar The bar being moved
+     * @param {GanttRowObject[]} rowBarData The main data object
+     * @param {string} [newRowId] The new rowId in case of changing row
+     * @return the object updated
+
+     */
+    const updateOnBarChangeRow = (
+      bar: GanttBarObject,
+      rowBarData: GanttRowObject[],
+      newRowId?: string
+    ): GanttRowObject[] => {
+      const rowObjectToUpdate = [...rowBarData];
+      if (newRowId !== "") {
+        const newRow = rowBarData.find((row) => row.id === newRowId);
+        for (const eachBar of rowBarData) {
+          const foundBar = eachBar.bars.find((b) => b.ganttBarConfig.id === bar.ganttBarConfig.id);
+          if (foundBar) {
+            const index = eachBar.bars.indexOf(foundBar);
+            if (newRow && foundBar) {
+              newRow.bars.push(foundBar);
+            }
+            if (index !== -1) {
+              eachBar.bars.splice(index, 1);
+            }
+          }
+        }
+      }
+      return rowObjectToUpdate;
+    };
+
+    /*
+    Enable Marklix event bus
+    */
+    const enableBusEvent = () => {
+      eventBus.on("bar-events", (e) => {
+        onBusEvent(e.componentId, e.type, e.values);
+      });
+    };
+
+    /**
+     * Manage the bus events
+     * @param {string} componentId The component Id
+     * @param {string} type The event type
+     * @param {Record<string, GanttBarObject | string>} values The event values
+     */
+    const onBusEvent = (componentId: string, type: string, values: Record<string, GanttBarObject | string>) => {
+      if (componentId === props.id) {
+        switch (type) {
+          case "add":
+            addBar(values.bar as GanttBarObject);
+            break;
+          case "delete":
+            deleteBar(values.id as string);
+            break;
+        }
+      }
+    };
+
+    const addBar = (bar: GanttBarObject) => {
+      for (const row of props.rowBarData) {
+        if (row.bars.some((bar) => bar.ganttBarConfig.id === "62417507908749b66d60b231")) {
+          return;
+        }
+      }
+
+      const newRow = props.rowBarData.find((row) => row.id === "61f0fe1384183f00fdd7ad48");
+      if (newRow) {
+        newRow.bars.push(bar);
+      }
+    };
+
+    const deleteBar = (id: string) => {
+      for (const row of props.rowBarData) {
+        const idx = row.bars.findIndex((b) => b.ganttBarConfig.id === id);
+        if (idx !== -1) {
+          row.bars.splice(idx, 1);
+        }
+      }
+    };
+
+    onMounted(() => {
+      enableBusEvent();
+    });
 
     const ganttChart = ref<HTMLElement | null>(null);
 
