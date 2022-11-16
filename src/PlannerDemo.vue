@@ -1,29 +1,32 @@
 <template>
   <GanttChart
+    id="gantt-chart-1"
+    labelRows="Devices"
     :chart-start="chartStart"
     :chart-end="chartEnd"
     precision="hour"
-    :row-height="40"
+    :row-height="80"
     grid
-    width="80%"
+    width="80"
     bar-start="startDate"
     bar-end="endDate"
     :date-format="format"
     no-overlap
     :highlighted-units="[6, 12, 18]"
     :minimum-gap="120"
-    style="margin: 0 10%"
+    style="margin: 0"
+    :rowBarData="demoData"
     @mousedown-bar="onMousedownBar($event.bar, $event.e, $event.datetime)"
     @dblclick-bar="onMouseupBar($event.bar, $event.e, $event.datetime)"
     @mouseenter-bar="onMouseenterBar($event.bar, $event.e)"
     @mouseleave-bar="onMouseleaveBar($event.bar, $event.e)"
     @dragstart-bar="onDragstartBar($event.bar, $event.e)"
-    @drag-bar="onDragBar($event.bar, $event.e, $event.newRowId)"
-    @dragend-bar="onDragendBar($event.bar, $event.e, $event.movedBars)"
+    @drag-bar="(value) => (demoData.value = value)"
+    @dragend-bar="(value) => (demoData.value = value)"
     @contextmenu-bar="onContextmenuBar($event.bar, $event.e, $event.datetime)"
   >
     <ganttRow
-      v-for="rowBar in initialBars"
+      v-for="rowBar in demoData"
       :id="rowBar.id ? rowBar.id : ''"
       :key="rowBar.id"
       :label="rowBar.device.name"
@@ -41,12 +44,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, inject } from "vue";
 
 import GanttRow from "./components/GanttRow.vue";
 import GanttChart from "./components/GanttChart.vue";
 
-import { GanttBarObject } from "@/models/models";
+import { GanttBarObject, GanttRowObject } from "@/models/models";
+import { Emitter } from "~/mitt";
 
 export default defineComponent({
   name: "GanttPlannerDemo",
@@ -55,11 +59,12 @@ export default defineComponent({
     GanttChart,
   },
   setup() {
+    const eventBus = inject("eventBus") as Emitter<GanttBarObject>;
     const chartStart = ref("2022-03-28 00:00");
     const chartEnd = ref("2022-03-28 23:59");
     const format = ref("YYYY-MM-DD HH:mm");
 
-    const initialBars = ref([
+    const demoData = ref([
       {
         id: "60354f7a5f1b9c301d7d7f58",
         device: {
@@ -143,52 +148,47 @@ export default defineComponent({
           },
         ],
       },
-    ]);
+    ] as GanttRowObject[]);
+    const bar = {
+      startDate: "2022-03-28 19:00",
+      endDate: "2022-03-28 22:15",
+      gapMs: 11700000,
+      device: "61f0fe1384183f00fdd7ad48",
+      items: [],
+      ganttBarConfig: {
+        id: "62417507908749b66d60b231",
+        label: "Batch P330 - 2",
+        hasHandles: true,
+        style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" },
+      },
+    };
 
     const addBar = () => {
-      for (const row of initialBars.value) {
-        if (row.bars.some((bar) => bar.ganttBarConfig.id === "62417507908749b66d60b231")) {
-          return;
-        }
-      }
-      const bar = {
-        startDate: "2022-03-28 19:00",
-        endDate: "2022-03-28 22:15",
-        gapMs: 11700000,
-        device: "61f0fe1384183f00fdd7ad48",
-        items: [],
-        ganttBarConfig: {
-          id: "62417507908749b66d60b231",
-          label: "Batch P330 - 2",
-          hasHandles: true,
-          style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" },
+      eventBus.emit("bar-events", {
+        componentId: "gantt-chart-1",
+        type: "add",
+        values: {
+          bar: bar,
         },
-      };
-      const newRow = initialBars.value.find((row) => row.id === "61f0fe1384183f00fdd7ad48");
-      if (newRow) {
-        newRow.bars.push(bar);
-      }
+      });
     };
 
     const deleteBar = () => {
-      for (const row of initialBars.value) {
-        const idx = row.bars.findIndex((b) => b.ganttBarConfig.id === "62417507908749b66d60b231");
-        if (idx !== -1) {
-          row.bars.splice(idx, 1);
-        }
-      }
-      const idx = initialBars.value[1].bars.findIndex((b) => b.ganttBarConfig.id === "62417507908749b66d60b231");
-      if (idx !== -1) {
-        initialBars.value[1].bars.splice(idx, 1);
-      }
+      eventBus.emit("bar-events", {
+        componentId: "gantt-chart-1",
+        type: "delete",
+        values: {
+          id: "62417507908749b66d60b231",
+        },
+      });
     };
 
     const onMousedownBar = (bar: GanttBarObject, e: MouseEvent, datetime?: string) => {
-      // console.log("mousedown-bar", bar, e, datetime)
+      // console.log("mousedown-bar", bar, e, datetime);
     };
 
     const onMouseupBar = (bar: GanttBarObject, e: MouseEvent, datetime?: string) => {
-      // console.log("mouseup-bar", bar, e, datetime)
+      // console.log("mouseup-bar", bar, e, datetime);
     };
 
     const onMouseenterBar = (bar: GanttBarObject, e: MouseEvent) => {
@@ -202,48 +202,6 @@ export default defineComponent({
     const onDragstartBar = (bar: GanttBarObject, e: MouseEvent) => {
       // console.log("dragstart-bar", bar, e)
     };
-    const onDragBar = (bar: GanttBarObject, e: MouseEvent, newRowId: string) => {
-      let foundBar;
-      if (newRowId !== "") {
-        const newRow = initialBars.value.find((row) => row.id === newRowId);
-        for (const eachBar of initialBars.value) {
-          foundBar = eachBar.bars.find((b) => b.ganttBarConfig.id === bar.ganttBarConfig.id);
-          if (foundBar) {
-            const index = eachBar.bars.indexOf(foundBar);
-            if (newRow && foundBar) {
-              newRow.bars.push(foundBar);
-            }
-            if (index !== -1) {
-              eachBar.bars.splice(index, 1);
-            }
-          }
-        }
-      }
-    };
-
-    const onDragendBar = (
-      bar: GanttBarObject,
-      e: MouseEvent,
-      movedBars?: Map<GanttBarObject, { oldStart: string; oldEnd: string; oldRow: string }>
-    ) => {
-      // console.log("dragend-bar", bar, e, movedBars)
-      const deleteBarRow = initialBars.value.find((row) =>
-        row.bars.find((b) => Object.entries(b).toString() === Object.entries(bar).toString())
-      );
-      if (deleteBarRow && deleteBarRow.id !== bar.device) {
-        const foundBar = deleteBarRow.bars.find((b) => b.ganttBarConfig.id === bar.ganttBarConfig.id);
-        if (foundBar) {
-          const index = deleteBarRow.bars.indexOf(foundBar);
-          if (index !== -1) {
-            deleteBarRow.bars.splice(index, 1);
-          }
-        }
-        const addBarRow = initialBars.value.find((row) => row.id === bar.device);
-        if (addBarRow && foundBar) {
-          addBarRow.bars.push(foundBar);
-        }
-      }
-    };
 
     const onContextmenuBar = (bar: GanttBarObject, e: MouseEvent, datetime?: string) => {
       // console.log("contextmenu-bar", bar, e, datetime)
@@ -254,7 +212,7 @@ export default defineComponent({
     };
 
     return {
-      initialBars,
+      demoData,
       chartStart,
       chartEnd,
       format,
@@ -265,8 +223,6 @@ export default defineComponent({
       onMouseenterBar,
       onMouseleaveBar,
       onDragstartBar,
-      onDragBar,
-      onDragendBar,
       onContextmenuBar,
       onDoubleClickRow,
     };
