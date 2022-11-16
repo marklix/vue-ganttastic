@@ -105,13 +105,14 @@ export default defineComponent({
       if ((e.target as Element).className === "gantt-row") {
         const id = (e.target as Element).id;
         const datetime = getDatetime(e);
+
         if (datetime && id) {
           emit("dblclick-row", { e, id, datetime });
         }
       }
     };
 
-    return { isHovering, rowStyle, doubleClickRow, onDrop };
+    return { barContainer, isHovering, rowStyle, doubleClickRow, onDrop };
   },
 });
 </script>
