@@ -242,11 +242,11 @@ export default function useBarDragManagement(
 
       movedBarsInDrag.forEach((_, bar) => {
         const { overlapBar } = getOverlapBarAndType(bar);
+
         if (overlapBar != null) {
           isAnyOverlap = true;
         }
       });
-
       if (isAnyOverlap) {
         movedBarsInDrag.forEach(({ oldStart, oldEnd, oldRow }, bar) => {
           const oldRowElement = document.getElementById(oldRow);
@@ -296,7 +296,7 @@ export default function useBarDragManagement(
     if (bundle != null) {
       allRowsInChart.value.forEach((row) => {
         row.forEach((bar) => {
-          if (bar.ganttBarConfig.bundle === bundle) {
+          if (bar.ganttBarConfig.bundle === bundle && bar.device === mainBar.device) {
             const dragEndHandler = bar === mainBar ? onEndDrag : () => null;
             const { initDrag } = useBarDrag(ref(bar), ganttChartPropsRefs, onDrag, dragEndHandler);
 
