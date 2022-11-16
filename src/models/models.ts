@@ -16,6 +16,12 @@
 
 import { Ref } from "vue";
 
+export type GanttRowObject = {
+  id: string;
+  device: { id: string; name: string; serial: string };
+  bars: GanttBarObject[];
+};
+
 export type GanttBarObject = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
@@ -31,7 +37,7 @@ export type GanttBarObject = {
     immobile?: boolean;
     pushOnOverlap?: boolean;
 
-    style?: CSSStyleSheet;
+    style?: CSSStyleSheet | Record<string, string>;
   };
 };
 
