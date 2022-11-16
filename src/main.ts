@@ -20,4 +20,9 @@ import PlannerDemo from "./PlannerDemo.vue";
 
 import { createApp } from "vue";
 
-createApp(PlannerDemo).use(planner).mount("#app");
+import mitt from "mitt";
+import { plannerBusEvents } from "@/composables/eventBus";
+
+const emitter = mitt<plannerBusEvents>();
+
+createApp(PlannerDemo).use(planner).provide("eventBus", emitter).mount("#app");
