@@ -69,20 +69,19 @@ export default defineComponent({
             let top = 0;
             let left = 0;
 
-            if (barElement) {
-              top = barElement.getBoundingClientRect().top;
-              left = barElement.getBoundingClientRect().left;
-            }
-
             const { rowHeight } = ganttChartPropsRefs;
 
             // Get relative position to window for hide tooltip if is out of container
             const chartContainerOffset = document.getElementById(props.parentId)?.getBoundingClientRect().left || 0;
             const chartContainerWidth = document.getElementById(props.parentId)?.getBoundingClientRect().width || 0;
 
-            // There is a bug that randomly changes the place of tooltip when changing row, this is a workaround for it
-            if (barElement?.offsetLeft) {
-              left = barElement?.offsetLeft + 10 + chartContainerOffset;
+            if (barElement) {
+              top = barElement.getBoundingClientRect().top;
+
+              // There is a bug that randomly changes the place of tooltip when changing row, this is a workaround for it
+              if (barElement?.offsetLeft) {
+                left = barElement?.offsetLeft + 10 + chartContainerOffset;
+              }
             }
 
             // Hide/show tooltip if true/false out of limits
