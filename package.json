@@ -12,8 +12,10 @@
   "main": "dist/planner.js",
   "module": "dist/planner.mjs",
   "dependencies": {
+    "@types/sortablejs": "^1.15.0",
     "dayjs": "^1.11.6",
-    "mitt": "^3.0.0"
+    "mitt": "^3.0.0",
+    "sortablejs": "^1.15.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.39.0",
