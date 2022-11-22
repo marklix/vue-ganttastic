@@ -1,4 +1,5 @@
 <template>
+  <h2>GANTT DEMO</h2>
   <GanttChart
     id="gantt-chart-1"
     labelRows="Devices"
@@ -41,6 +42,12 @@
 
   <button @click="addBar()">Add bar</button>
   <button @click="deleteBar()">Delete bar</button>
+  <h2>KANBAN DEMO</h2>
+  <div style="display: flex">
+    <KanbanContent :data="childrenOne" style="width: 33.33%" />
+    <KanbanContent :data="childrenTwo" style="width: 33.33%" />
+    <KanbanContent :data="childrenThree" style="width: 33.33%" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -51,12 +58,15 @@ import GanttChart from "./components/GanttChart.vue";
 
 import { GanttBarObject, GanttRowObject } from "@/models/models";
 import { Emitter } from "~/mitt";
+import { Item, List } from "@/models/modelsKanban";
+import KanbanContent from "@/components/KanbanContent.vue";
 
 export default defineComponent({
   name: "GanttPlannerDemo",
   components: {
     GanttRow,
     GanttChart,
+    KanbanContent,
   },
   setup() {
     const eventBus = inject("eventBus") as Emitter<GanttBarObject>;
@@ -162,6 +172,50 @@ export default defineComponent({
         style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" },
       },
     };
+    const childrenOne = ref({
+      id: "column-one",
+      group: "lists",
+      children: [
+        {
+          id: "child-1",
+          hasChildren: false,
+        },
+      ],
+    } as List);
+    const childrenTwo = ref({
+      id: "column-two",
+      group: "lists",
+      children: [
+        {
+          id: "child-2",
+          hasChildren: true,
+          childGroup: "childGroup",
+          children: [
+            {
+              id: "sub-child-1",
+              hasChildren: false,
+            },
+          ],
+        },
+      ],
+    } as List);
+    const childrenThree = ref({
+      id: "column-three",
+      group: "lists",
+      children: [
+        {
+          id: "child-3",
+          hasChildren: true,
+          childGroup: "childGroup",
+          children: [
+            {
+              id: "sub-child-2",
+              hasChildren: false,
+            },
+          ],
+        },
+      ],
+    } as List);
 
     const addBar = () => {
       eventBus.emit("bar-events", {
@@ -192,29 +246,32 @@ export default defineComponent({
     };
 
     const onMouseenterBar = (bar: GanttBarObject, e: MouseEvent) => {
-      // console.log("mouseenter-bar", bar, e)
+      // console.log("mouseenter-bar", bar, e);
     };
 
     const onMouseleaveBar = (bar: GanttBarObject, e: MouseEvent) => {
-      // console.log("mouseleave-bar", bar, e)
+      // console.log("mouseleave-bar", bar, e);
     };
 
     const onDragstartBar = (bar: GanttBarObject, e: MouseEvent) => {
-      // console.log("dragstart-bar", bar, e)
+      // console.log("dragstart-bar", bar, e);
     };
 
     const onContextmenuBar = (bar: GanttBarObject, e: MouseEvent, datetime?: string) => {
-      // console.log("contextmenu-bar", bar, e, datetime)
+      // console.log("contextmenu-bar", bar, e, datetime);
     };
 
     const onDoubleClickRow = (e: MouseEvent, id: string, datetime: string) => {
-      console.log(e, id, datetime);
+      // console.log(e, id, datetime);
     };
 
     return {
       demoData,
       chartStart,
       chartEnd,
+      childrenOne,
+      childrenTwo,
+      childrenThree,
       format,
       addBar,
       deleteBar,
