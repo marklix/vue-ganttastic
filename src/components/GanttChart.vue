@@ -15,11 +15,6 @@
   -->
 
 <template>
-  <!--div class="gantt-row-label">
-    <slot name="label">
-      {{ label }}
-    </slot>
-  </div-->
   <div style="width: 100%; display: flex">
     <div :style="{ width: 100 - width + '%', overflow: 'hidden' }">
       <div class="gantt-rows-label">
@@ -63,6 +58,7 @@ import GanttBarTooltip from "@/components/GanttBarTooltip.vue";
 import { Emitter } from "~/mitt";
 
 import { GanttBarObject, GanttRowObject } from "@/models/models";
+import dayjs from "dayjs";
 
 export default defineComponent({
   name: "GanttChart",
@@ -141,6 +137,11 @@ export default defineComponent({
     const isDragging = ref(false);
     const tooltipBar = ref<GanttBarObject | null>(null);
     let tooltipTimeoutId: ReturnType<typeof setTimeout>;
+
+    /**
+     * Initialize the tooltip popup
+     * @param {GanttBarObject} bar The bar that contains the tooltip
+     */
     const initTooltip = (bar: GanttBarObject) => {
       if (tooltipTimeoutId) {
         clearTimeout(tooltipTimeoutId);
@@ -151,11 +152,22 @@ export default defineComponent({
       tooltipBar.value = bar;
     };
 
+    /**
+     * Clear the tooltip popup
+     */
     const clearTooltip = () => {
       clearTimeout(tooltipTimeoutId);
       showTooltip.value = false;
     };
 
+    /**
+     * Emit all bar events
+     * @param {MouseEvent} e The mouse event
+     * @param {GanttBarObject} bar The bar that creates the event
+     * @param {string} datetime The datetime for the event
+     * @param {Map<GanttBarObject, { oldStart: string; oldEnd: string }>} [movedBars] A map with the bars that have been moved
+     * @param {string} newRowId The new row ID if there is a row change
+     */
     const emitBarEvent = (
       e: MouseEvent,
       bar: GanttBarObject,
@@ -270,7 +282,7 @@ export default defineComponent({
       return rowObjectToUpdate;
     };
 
-    /*
+    /**
     Enable Marklix event bus
     */
     const enableBusEvent = () => {
@@ -298,19 +310,52 @@ export default defineComponent({
       }
     };
 
+    /**
+     * Add a bar to the Gantt chart
+     * @param {GanttBarObject} bar The bar being added
+     */
     const addBar = (bar: GanttBarObject) => {
       for (const row of props.rowBarData) {
-        if (row.bars.some((bar) => bar.ganttBarConfig.id === "62417507908749b66d60b231")) {
+        if (row.bars.some((someBar) => someBar.ganttBarConfig.id === bar.ganttBarConfig.id)) {
           return;
         }
       }
+      if (calculateCollision(bar)) {
+        return;
+      }
 
-      const newRow = props.rowBarData.find((row) => row.id === "61f0fe1384183f00fdd7ad48");
+      const newRow = props.rowBarData.find((row) => row.id === bar.device);
       if (newRow) {
         newRow.bars.push(bar);
       }
     };
 
+    /**
+     Detect if there is a collision with any other bar
+     @param {GanttBarObject} bar The bar being added
+     */
+    const calculateCollision = (bar: GanttBarObject): boolean => {
+      const selectedRow = props.rowBarData.find((row) => row.id === bar.device);
+      let batches: GanttBarObject[] = [];
+      if (selectedRow) {
+        batches = selectedRow.bars;
+      }
+      for (const batch of batches) {
+        if (
+          bar.ganttBarConfig.id !== batch.ganttBarConfig.id &&
+          dayjs(bar.startDate as string).diff(batch.endDate as string) < 0 &&
+          dayjs(bar.endDate as string).diff(batch.startDate as string) > 0
+        ) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    /**
+     * Delete a bar from the Gantt chart
+     * @param {string} id The bar ID
+     */
     const deleteBar = (id: string) => {
       for (const row of props.rowBarData) {
         const idx = row.bars.findIndex((b) => b.ganttBarConfig.id === id);
