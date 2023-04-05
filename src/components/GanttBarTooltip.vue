@@ -76,11 +76,16 @@ export default defineComponent({
             const chartContainerWidth = document.getElementById(props.parentId)?.getBoundingClientRect().width || 0;
 
             if (barElement) {
-              top = barElement.getBoundingClientRect().top;
-
-              // There is a bug that randomly changes the place of tooltip when changing row, this is a workaround for it
+              // There is a bug that randomly changes the horizontal place of tooltip when changing row using
+              // getBoundingClientRect(), this is a workaround for it
               if (barElement?.offsetLeft) {
                 left = barElement?.offsetLeft + 10 + chartContainerOffset;
+              }
+
+              // There is a bug that randomly changes the vertical place of tooltip when changing row using
+              // getBoundingClientRect(), this is a workaround for it
+              if (barElement?.closest(".gantt-row")?.getBoundingClientRect().top) {
+                top = (barElement?.closest(".gantt-row")?.getBoundingClientRect().top ?? 0) + 10;
               }
             }
 
