@@ -379,3 +379,6 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="scss">
+@import "../public/style.scss";
+</style>
