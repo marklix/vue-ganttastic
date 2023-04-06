@@ -19,7 +19,6 @@
       "webpack-env"
     ],
     "paths": {
-      "@/*": ["src/*"],
       "~/*": ["node_modules/*"]
     },
     "lib": [
