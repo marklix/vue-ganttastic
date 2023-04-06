@@ -25,4 +25,4 @@ import { plannerBusEvents } from "./composables/eventBus";
 
 const emitter = mitt<plannerBusEvents>();
 
-createApp(PlannerDemo).use(planner).provide("eventBus", emitter).mount("#app");
+createApp(PlannerDemo).use(planner).provide("marklixBus", emitter).mount("#app");

@@ -69,7 +69,7 @@ export default defineComponent({
     KanbanContent,
   },
   setup() {
-    const eventBus = inject("eventBus") as Emitter<GanttBarObject>;
+    const eventBus = inject("marklixBus") as Emitter<GanttBarObject>;
     const chartStart = ref("2022-03-28 00:00");
     const chartEnd = ref("2022-03-28 23:59");
     const format = ref("YYYY-MM-DD HH:mm");
@@ -288,5 +288,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "../public/style.scss";
+@import "public/style.scss";
 </style>

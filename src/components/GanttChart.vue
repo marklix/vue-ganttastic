@@ -98,7 +98,7 @@ export default defineComponent({
     GanttBarTooltip,
   },
   setup(props, { emit }) {
-    const eventBus = inject("eventBus") as Emitter<GanttBarObject>;
+    const eventBus = inject("marklixBus") as Emitter<GanttBarObject>;
     const slots = useSlots();
 
     const allBarsInChartByRow = computed(() => {
