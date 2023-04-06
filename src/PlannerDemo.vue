@@ -26,6 +26,9 @@
     @dragend-bar="(value) => (demoData.value = value)"
     @contextmenu-bar="onContextmenuBar($event.bar, $event.e, $event.datetime)"
   >
+    <template #device-label="{ rowBar }">
+      {{ rowBar.device.name }}
+    </template>
     <GanttRow
       v-for="rowBar in demoData"
       :id="rowBar.id ? rowBar.id : ''"

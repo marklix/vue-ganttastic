@@ -21,7 +21,7 @@
         {{ labelRows }}
       </div>
       <div class="gantt-row-label" v-for="rowBar in rowBarData" :key="rowBar.id" :style="{ height: rowHeight + 'px' }">
-        {{ rowBar.device.name }}
+        <slot name="device-label" :rowBar="rowBar" />
       </div>
     </div>
     <div class="gantt-chart" :id="id" ref="ganttChart" :style="{ width: width + '%' }">
