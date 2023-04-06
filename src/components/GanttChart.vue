@@ -55,7 +55,7 @@ import GanttTimeAxis from "./GanttTimeAxis.vue";
 import GanttGrid from "./GanttGrid.vue";
 import GanttBarTooltip from "./GanttBarTooltip.vue";
 
-import { Emitter } from "~/mitt";
+import { Emitter } from "mitt";
 
 import { GanttBarObject, GanttRowObject } from "../models/models";
 import dayjs from "dayjs";

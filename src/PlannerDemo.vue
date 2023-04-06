@@ -26,7 +26,7 @@
     @dragend-bar="(value) => (demoData.value = value)"
     @contextmenu-bar="onContextmenuBar($event.bar, $event.e, $event.datetime)"
   >
-    <ganttRow
+    <GanttRow
       v-for="rowBar in demoData"
       :id="rowBar.id ? rowBar.id : ''"
       :key="rowBar.id"
@@ -37,7 +37,7 @@
       <template #bar-label="{ bar }">
         {{ bar.ganttBarConfig.label }}
       </template>
-    </ganttRow>
+    </GanttRow>
   </GanttChart>
 
   <button @click="addBar()">Add bar</button>
@@ -57,7 +57,7 @@ import GanttRow from "./components/GanttRow.vue";
 import GanttChart from "./components/GanttChart.vue";
 
 import { GanttBarObject, GanttRowObject } from "./models/models";
-import { Emitter } from "~/mitt";
+import { Emitter } from "mitt";
 import { Item, List } from "./models/modelsKanban";
 import KanbanContent from "./components/KanbanContent.vue";
 
