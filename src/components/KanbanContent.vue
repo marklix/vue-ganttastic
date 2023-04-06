@@ -35,9 +35,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { List } from "@/models/modelsKanban";
-import KanbanItem from "@/components/KanbanItem.vue";
-import KanbanList from "@/components/KanbanList.vue";
+import { List } from "../models/modelsKanban";
+import KanbanItem from "./KanbanItem.vue";
+import KanbanList from "./KanbanList.vue";
 
 export default defineComponent({
   name: "KanbanContent",

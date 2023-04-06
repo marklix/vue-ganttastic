@@ -51,13 +51,13 @@ import { computed, defineComponent, inject, provide, ref, onMounted, toRefs, use
 
 import INJECTION_KEYS from "../models/symbols";
 
-import GanttTimeAxis from "@/components/GanttTimeAxis.vue";
-import GanttGrid from "@/components/GanttGrid.vue";
-import GanttBarTooltip from "@/components/GanttBarTooltip.vue";
+import GanttTimeAxis from "./GanttTimeAxis.vue";
+import GanttGrid from "./GanttGrid.vue";
+import GanttBarTooltip from "./GanttBarTooltip.vue";
 
 import { Emitter } from "~/mitt";
 
-import { GanttBarObject, GanttRowObject } from "@/models/models";
+import { GanttBarObject, GanttRowObject } from "../models/models";
 import dayjs from "dayjs";
 
 export default defineComponent({

@@ -18,7 +18,7 @@ import { computed } from "vue";
 
 import dayjs, { ManipulateType } from "dayjs";
 
-import { GanttBarObject, GanttChartPropsRefs } from "@/models/models";
+import { GanttBarObject, GanttChartPropsRefs } from "../models/models";
 
 /**
  * Return time properties and functions related to a particular GANTT chart.

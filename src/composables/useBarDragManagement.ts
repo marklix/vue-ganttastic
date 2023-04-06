@@ -16,7 +16,7 @@
 
 import { ComputedRef, ref } from "vue";
 
-import { GanttBarObject, GanttChartPropsRefs } from "@/models/models";
+import { GanttBarObject, GanttChartPropsRefs } from "../models/models";
 
 import useBarDrag from "./useBarDrag";
 import useDayjsHelper from "./useDayjsHelper";

@@ -56,10 +56,10 @@ import { defineComponent, ref, inject } from "vue";
 import GanttRow from "./components/GanttRow.vue";
 import GanttChart from "./components/GanttChart.vue";
 
-import { GanttBarObject, GanttRowObject } from "@/models/models";
+import { GanttBarObject, GanttRowObject } from "./models/models";
 import { Emitter } from "~/mitt";
-import { Item, List } from "@/models/modelsKanban";
-import KanbanContent from "@/components/KanbanContent.vue";
+import { Item, List } from "./models/modelsKanban";
+import KanbanContent from "./components/KanbanContent.vue";
 
 export default defineComponent({
   name: "GanttPlannerDemo",
@@ -288,5 +288,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "public/style.scss";
+@import "../public/style.scss";
 </style>

@@ -16,7 +16,7 @@
 
 import { ComputedRef } from "vue";
 
-import { GanttBarObject, GanttChartPropsRefs } from "@/models/models";
+import { GanttBarObject, GanttChartPropsRefs } from "../models/models";
 
 /**
  * Returns a function to handle dragging limits of a bar.

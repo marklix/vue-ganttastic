@@ -14,7 +14,7 @@
  * version of this notice is legally binding (see above).
  */
 
-import { GanttBarObject } from "@/models/models";
+import { GanttBarObject } from "../models/models";
 
 type plannerRefreshPayload = {
   componentId: string;

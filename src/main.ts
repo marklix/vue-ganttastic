@@ -21,7 +21,7 @@ import PlannerDemo from "./PlannerDemo.vue";
 import { createApp } from "vue";
 
 import mitt from "mitt";
-import { plannerBusEvents } from "@/composables/eventBus";
+import { plannerBusEvents } from "./composables/eventBus";
 
 const emitter = mitt<plannerBusEvents>();
 

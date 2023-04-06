@@ -18,7 +18,7 @@ import { Ref, ref } from "vue";
 
 import dayjs from "dayjs";
 
-import { GanttBarObject, GanttChartPropsRefs } from "@/models/models";
+import { GanttBarObject, GanttChartPropsRefs } from "../models/models";
 
 import useDayjsHelper from "./useDayjsHelper";
 import useTimePositionMapping from "./useTimePositionMapping";

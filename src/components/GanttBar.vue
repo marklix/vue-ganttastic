@@ -44,12 +44,12 @@
 <script lang="ts">
 import { computed, defineComponent, ref, inject, watch, nextTick } from "vue";
 
-import useBarDragManagement from "@/composables/useBarDragManagement";
-import useTimePositionMapping from "@/composables/useTimePositionMapping";
+import useBarDragManagement from "../composables/useBarDragManagement";
+import useTimePositionMapping from "../composables/useTimePositionMapping";
 
-import { GanttBarObject } from "@/models/models";
+import { GanttBarObject } from "../models/models";
 
-import INJECTION_KEYS from "@/models/symbols";
+import INJECTION_KEYS from "../models/symbols";
 
 export default defineComponent({
   name: "GanttBar",

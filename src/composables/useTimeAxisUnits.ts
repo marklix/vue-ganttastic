@@ -18,7 +18,7 @@ import { computed } from "vue";
 
 import useDayjsHelper from "./useDayjsHelper";
 
-import { GanttChartPropsRefs } from "@/models/models";
+import { GanttChartPropsRefs } from "../models/models";
 
 import { ManipulateType } from "dayjs";
 

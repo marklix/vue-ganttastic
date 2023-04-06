@@ -18,7 +18,7 @@ import { computed } from "vue";
 
 import useDayjsHelper from "./useDayjsHelper";
 
-import { GanttChartPropsRefs } from "@/models/models";
+import { GanttChartPropsRefs } from "../models/models";
 
 // TODO: check that "minutes" is the right unit for time/space conversion.
 
