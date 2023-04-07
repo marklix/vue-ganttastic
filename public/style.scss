@@ -187,7 +187,7 @@
 
 .bar-transition-leave-active,
 .bar-transition-enter-active {
-  transition: 0s;
+  transition: 0s !important;
 }
 .bar-transition-enter-from {
   transform: scale(0);
