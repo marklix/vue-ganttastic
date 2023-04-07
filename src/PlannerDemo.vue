@@ -23,7 +23,7 @@
     @mouseleave-bar="onMouseleaveBar($event.bar, $event.e)"
     @dragstart-bar="onDragstartBar($event.bar, $event.e)"
     @drag-bar="(value) => (demoData.value = value)"
-    @dragend-bar="(value) => (demoData.value = value)"
+    @dragend-bar="(value) => (demoData.value = value.rowObjectToUpdate)"
     @contextmenu-bar="onContextmenuBar($event.bar, $event.e, $event.datetime)"
   >
     <template #device-label="{ rowBar }">
