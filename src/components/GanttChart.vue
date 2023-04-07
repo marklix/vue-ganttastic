@@ -206,7 +206,7 @@ export default defineComponent({
         case "dragend":
           isDragging.value = false;
           if (movedBars) {
-            emit("dragend-bar", updateOnDragEnd(movedBars, props.rowBarData));
+            emit("dragend-bar", updateOnDragEnd(movedBars, props.rowBarData), movedBars);
           }
           break;
         case "contextmenu":
