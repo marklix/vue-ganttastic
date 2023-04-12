@@ -1,12 +1,16 @@
 .gantt-row {
   width: 100%;
   position: relative;
-
   .gantt-row-bars-container {
     position: relative;
-    border-top: 1px solid #eaeaea;
+
     width: 100%;
     border-bottom: 1px solid #eaeaea;
+  }
+}
+.gantt-row:first-child {
+.gantt-row-bars-container {
+    border-top: 1px solid #eaeaea;
   }
 }
 
@@ -212,7 +216,6 @@
   -ms-user-select: none;
   user-select: none;
   border-radius: 5px;
-  background: #ffffff;
 }
 
 #gantt-rows-container {
