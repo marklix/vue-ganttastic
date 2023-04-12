@@ -133,6 +133,10 @@ export default function useBarDragManagement(
         return false;
       }
 
+      if (otherBar.ganttBarConfig.immobile) {
+        return false;
+      }
+
       const otherBarStart = toDayjs(otherBar[barStart.value]);
       const otherBarEnd = toDayjs(otherBar[barEnd.value]);
 
