@@ -35,6 +35,7 @@ export type GanttBarObject = {
     dragLimitRight?: number;
     hasHandles?: boolean;
     immobile?: boolean;
+    enableOverlap?: boolean;
     pushOnOverlap?: boolean;
 
     style?: CSSStyleSheet | Record<string, string>;

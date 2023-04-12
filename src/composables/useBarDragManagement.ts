@@ -133,7 +133,7 @@ export default function useBarDragManagement(
         return false;
       }
 
-      if (otherBar.ganttBarConfig.immobile) {
+      if (otherBar.ganttBarConfig.enableOverlap) {
         return false;
       }
 
