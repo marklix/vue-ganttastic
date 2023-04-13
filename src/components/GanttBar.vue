@@ -23,7 +23,7 @@
     @mouseenter="onMouseEvent"
     @mouseleave="onMouseEvent"
     @contextmenu="onMouseEvent"
-    :class="bar.ganttBarConfig.immobile ? 'immobile' : ''"
+    :class="bar.ganttBarConfig.immobile ? 'immobile' : '' + ' ' + bar.ganttBarConfig.enableOverlap ? 'overlapped' : ''"
     class="gantt-bar"
     :style="barStyle"
   >

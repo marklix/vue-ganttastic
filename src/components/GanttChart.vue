@@ -172,7 +172,7 @@ export default defineComponent({
       e: MouseEvent,
       bar: GanttBarObject,
       datetime?: string,
-      movedBars?: Map<GanttBarObject, { oldStart: string; oldEnd: string }>,
+      movedBars?: Map<GanttBarObject, { oldStart: string; oldEnd: string; oldRow: string }>,
       newRowId?: string
     ) => {
       switch (e.type) {
