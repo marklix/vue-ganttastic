@@ -28,7 +28,7 @@
     @mouseover="isHovering = true"
     @mouseleave="isHovering = false"
   >
-    <div ref="barContainer" class="gantt-row-bars-container" v-bind="$attrs" :style="rowStyle">
+    <div ref="barContainer" class="gantt-row-bars-container" v-bind="$attrs">
       <transition-group name="bar-transition" tag="div">
         <GanttBar v-for="bar in bars" :key="bar.ganttBarConfig.id" :bar="bar">
           <slot name="bar-label" :bar="bar" />
