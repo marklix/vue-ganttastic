@@ -139,7 +139,7 @@ export default defineComponent({
         left: `${xStart.value}px`,
         width: `${xEnd.value - xStart.value}px`,
         height: `${rowHeight.value * 0.9}px`,
-        zIndex: isDragging.value ? 3 : 2,
+        zIndex: isDragging.value ? 3 : props.bar.ganttBarConfig.immobile ? 1 : 2,
       };
     });
 
