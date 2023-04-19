@@ -125,6 +125,9 @@
 
   &.immobile {
     opacity: 0.5;
+    .gantt-bar-label {
+        cursor: default;
+    }
   }
 
   .gantt-bar-label {

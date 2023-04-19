@@ -17,7 +17,7 @@
 <template>
   <teleport to="body">
     <div
-      v-if="modelValue && !outOfLimits"
+      v-if="modelValue && !outOfLimits && tooltipEnabled"
       class="gantt-tooltip"
       :style="{
         top: tooltipTop,
@@ -58,6 +58,7 @@ export default defineComponent({
     const tooltipTop = ref("0px");
     const tooltipLeft = ref("0px");
     const outOfLimits = ref(false);
+    const tooltipEnabled = ref(true);
 
     watch(
       () => props.bar,
@@ -94,6 +95,9 @@ export default defineComponent({
 
             tooltipTop.value = `${top + rowHeight.value - 10}px`;
             tooltipLeft.value = `${left}px`;
+            tooltipEnabled.value = true;
+          } else {
+            tooltipEnabled.value = false;
           }
         });
       },
@@ -125,7 +129,7 @@ export default defineComponent({
       return "";
     });
 
-    return { dotColor, outOfLimits, tooltipContent, tooltipLeft, tooltipTop };
+    return { dotColor, outOfLimits, tooltipContent, tooltipLeft, tooltipTop, tooltipEnabled };
   },
 });
 </script>
