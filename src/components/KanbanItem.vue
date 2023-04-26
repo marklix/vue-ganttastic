@@ -19,7 +19,9 @@
     {{ id }}
     <slot name="childList"></slot>
   </li>
-  <li v-else :id="id">{{ id }}</li>
+  <li v-else :id="id">
+    <slot name="itemContent"></slot>
+  </li>
 </template>
 
 <script lang="ts">
