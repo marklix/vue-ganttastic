@@ -16,9 +16,8 @@
 
 <template>
   <li :id="id">
-    {{ id }}
-    <slot v-if="hasChildren" name="childList"></slot>
     <slot name="itemContent"></slot>
+    <slot v-if="hasChildren" name="childList"></slot>
   </li>
 </template>
 
