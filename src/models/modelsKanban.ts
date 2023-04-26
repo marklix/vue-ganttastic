@@ -17,11 +17,13 @@
 export type Item = {
   id: string;
   hasChildren: boolean;
-  childGroup?: string;
+  group?: string;
+  acceptFrom?: string[];
   children?: Item[];
 };
 export type List = {
   id: string;
   group: string;
+  acceptFrom: string[];
   children: Item[];
 };

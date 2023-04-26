@@ -22,28 +22,53 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from "vue";
-import Sortable, { SortableEvent } from "sortablejs";
+import Sortable, { GroupOptions, SortableEvent } from "sortablejs";
 
 export default defineComponent({
   name: "KanbanList",
   props: {
     id: { type: String, required: true },
     group: { type: String, required: true },
+    acceptFrom: { type: Array, required: false, default: () => [] },
   },
-  setup(props) {
-    const eventCallback = (event: SortableEvent) => {
-      console.log(event);
-      console.log(event.item);
-    };
+  emits: ["start", "end", "add", "update", "sort", "change"],
+  setup(props, { emit }) {
+    /**
+     * Sortable list configuration object
+     */
     const options: Sortable.Options = {
-      group: props.group,
+      group: {
+        name: props.group,
+        put: (to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) =>
+          checkLevel(to, from, dragEl, event),
+      } as Sortable.GroupOptions,
       onStart: (evt: SortableEvent) => eventCallback(evt),
       onEnd: (evt: SortableEvent) => eventCallback(evt),
       onAdd: (evt: SortableEvent) => eventCallback(evt),
       onUpdate: (evt: SortableEvent) => eventCallback(evt),
       onSort: (evt: SortableEvent) => eventCallback(evt),
       onChange: (evt: SortableEvent) => eventCallback(evt),
+      multiDrag: true,
     };
+
+    const checkLevel = (to: Sortable, from: Sortable, dragEl: HTMLElement, event: SortableEvent) => {
+      if (
+        (from.options.group as GroupOptions).name.split(":")[0] !==
+        (to.options.group as GroupOptions).name.split(":")[0]
+      ) {
+        return false;
+      }
+
+      return props.acceptFrom.includes((from.options.group as GroupOptions).name.split(":")[1]);
+    };
+
+    /**
+     * Event emit callback
+     */
+    const eventCallback = (event: SortableEvent) => {
+      emit(event.type as "start" | "end" | "add" | "update" | "sort" | "change", event);
+    };
+
     onMounted(() => {
       const sortableElement = document.getElementById(props.id);
       if (sortableElement) {

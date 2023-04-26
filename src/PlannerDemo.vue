@@ -47,9 +47,28 @@
   <button @click="deleteBar()">Delete bar</button>
   <h2>KANBAN DEMO</h2>
   <div style="display: flex">
-    <KanbanContent :data="childrenOne" style="width: 33.33%" />
-    <KanbanContent :data="childrenTwo" style="width: 33.33%" />
-    <KanbanContent :data="childrenThree" style="width: 33.33%" />
+    <KanbanList
+      v-for="child in childrenOne"
+      :id="child.id"
+      :key="child.id"
+      :group="child.group"
+      :acceptFrom="child.acceptFrom"
+      style="width: 25%"
+    >
+      <KanbanItem
+        v-for="item in child.children"
+        :key="item.id"
+        :id="item.id"
+        :has-children="item.hasChildren"
+        :group="item.group"
+        style="display: flex; flex-direction: column"
+        ><template v-slot:childList>
+          <KanbanList :id="'sub-item-' + item.id" :group="item.group" :acceptFrom="item.acceptFrom" class="sub-list">
+            <KanbanItem v-for="subItem in item.children" :key="subItem.id" :id="subItem.id" :has-children="false" />
+          </KanbanList>
+        </template>
+      </KanbanItem>
+    </KanbanList>
   </div>
 </template>
 
@@ -61,15 +80,19 @@ import GanttChart from "./components/GanttChart.vue";
 
 import { GanttBarObject, GanttRowObject } from "./models/models";
 import { Emitter } from "mitt";
-import { Item, List } from "./models/modelsKanban";
-import KanbanContent from "./components/KanbanContent.vue";
+import { List } from "./models/modelsKanban";
+import KanbanList from "./components/KanbanList.vue";
+import KanbanItem from "./components/KanbanItem.vue";
+import Sortable, { MultiDrag } from "sortablejs";
+Sortable.mount(new MultiDrag());
 
 export default defineComponent({
   name: "GanttPlannerDemo",
   components: {
     GanttRow,
     GanttChart,
-    KanbanContent,
+    KanbanList,
+    KanbanItem,
   },
   setup() {
     const eventBus = inject("marklixBus") as Emitter<GanttBarObject>;
@@ -175,50 +198,64 @@ export default defineComponent({
         style: { background: "#4aabcc", borderRadius: "8px", color: "#ffffff" },
       },
     };
-    const childrenOne = ref({
-      id: "column-one",
-      group: "lists",
-      children: [
-        {
-          id: "child-1",
-          hasChildren: false,
-        },
-      ],
-    } as List);
-    const childrenTwo = ref({
-      id: "column-two",
-      group: "lists",
-      children: [
-        {
-          id: "child-2",
-          hasChildren: true,
-          childGroup: "childGroup",
-          children: [
-            {
-              id: "sub-child-1",
-              hasChildren: false,
-            },
-          ],
-        },
-      ],
-    } as List);
-    const childrenThree = ref({
-      id: "column-three",
-      group: "lists",
-      children: [
-        {
-          id: "child-3",
-          hasChildren: true,
-          childGroup: "childGroup",
-          children: [
-            {
-              id: "sub-child-2",
-              hasChildren: false,
-            },
-          ],
-        },
-      ],
-    } as List);
+    const childrenOne = ref([
+      {
+        id: "column-one",
+        group: "0:orders",
+        acceptFrom: [],
+        children: [
+          {
+            id: "order-1",
+            hasChildren: true,
+            group: "1:orderItem",
+            children: [
+              {
+                id: "item-4",
+                hasChildren: false,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "column-two",
+        group: "0:confirmed",
+        acceptFrom: [],
+        children: [
+          {
+            id: "batch-2",
+            hasChildren: true,
+            group: "1:batchItemConfirmed",
+            acceptFrom: ["orderItem"],
+            children: [
+              {
+                id: "item-1",
+                hasChildren: false,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "column-three",
+        group: "0:finished",
+        acceptFrom: ["confirmed"],
+        children: [
+          {
+            id: "batch-3",
+            hasChildren: true,
+            group: "1:batchItemFinished",
+            acceptFrom: ["batchItemConfirmed"],
+            children: [
+              {
+                id: "item-2",
+                hasChildren: false,
+              },
+            ],
+          },
+        ],
+      },
+    ] as List[]);
 
     const addBar = () => {
       eventBus.emit("bar-events", {
@@ -273,8 +310,6 @@ export default defineComponent({
       chartStart,
       chartEnd,
       childrenOne,
-      childrenTwo,
-      childrenThree,
       format,
       addBar,
       deleteBar,
