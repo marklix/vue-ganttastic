@@ -34,11 +34,15 @@ import { Plugin } from "vue";
 
 import GanttChart from "./components/GanttChart.vue";
 import GanttRow from "./components/GanttRow.vue";
+import KanbanList from "./components/KanbanList.vue";
+import KanbanItem from "./components/KanbanItem.vue";
 
 const planner: Plugin = {
   install(app) {
     app.component("GanttChart", GanttChart);
     app.component("GanttRow", GanttRow);
+    app.component("KanbanList", KanbanList);
+    app.component("KanbanItem", KanbanItem);
   },
 };
 
