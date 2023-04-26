@@ -244,7 +244,7 @@
 }
 
 .kanban-list-container {
-    border: 1px dashed #333;
+    border: 1px dotted #cccccc;
     margin: 0 2%;
     padding: 0;
     min-height: 50px;
@@ -259,10 +259,9 @@
 
     .sub-list {
         min-height: 100px;
-        width: 80%;
         li {
         min-height: 40px;
-        background-color: #fafafa;
+        white-space: initial;
         }
     }
  }
