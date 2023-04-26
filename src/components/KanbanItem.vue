@@ -15,11 +15,9 @@
   -->
 
 <template>
-  <li v-if="hasChildren" :id="id">
+  <li :id="id">
     {{ id }}
-    <slot name="childList"></slot>
-  </li>
-  <li v-else :id="id">
+    <slot v-if="hasChildren" name="childList"></slot>
     <slot name="itemContent"></slot>
   </li>
 </template>
