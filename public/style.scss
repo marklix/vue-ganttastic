@@ -262,6 +262,9 @@
         li {
         min-height: 40px;
         white-space: initial;
+            &.sortable-selected {
+                border: 1px solid;
+            }
         }
     }
  }
